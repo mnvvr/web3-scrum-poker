@@ -1,0 +1,205 @@
+# Web3 Scrum Poker - Project Cursor Rules
+
+## Project Overview
+This is a Web3-enabled Scrum Poker application built with Next.js 14, TypeScript, and Tailwind CSS. The application features a vintage/distressed aesthetic with careful attention to user experience and future blockchain integration.
+
+## Technology Stack
+- **Framework**: Next.js 14 (App Router)
+- **Language**: TypeScript (strict mode)
+- **UI Library**: React 18
+- **Styling**: Tailwind CSS + Custom CSS
+- **Animation**: Framer Motion
+- **Icons**: Lucide React
+- **Utilities**: nanoid, react-hot-toast, clsx, tailwind-merge
+
+## Code Organization Rules
+
+### Directory Structure
+```
+/app            - Next.js pages (App Router)
+/components     - React components organized by feature
+  /auth         - Authentication components
+  /poker        - Poker card components
+  /room         - Room management components
+  /providers    - Context providers
+/types          - TypeScript type definitions
+/utils          - Helper functions and utilities
+/public         - Static assets
+```
+
+### File Naming Conventions
+- Components: PascalCase (e.g., `RoomHeader.tsx`)
+- Pages: lowercase (e.g., `page.tsx`)
+- Utilities: camelCase (e.g., `generateRoomCode.ts`)
+- Types: PascalCase interfaces/types in `types/index.ts`
+
+## Component Guidelines
+
+### React Component Structure
+```typescript
+'use client'  // Required for client components
+
+import { useState, useEffect } from 'react'
+import { ComponentProps } from '@/types'
+
+interface Props {
+    // Define props with TypeScript
+}
+
+export function ComponentName({ prop1, prop2 }: Props) {
+    // Hooks first
+    // Event handlers
+    // Render logic
+    return (
+        <div>
+            {/* JSX */}
+        </div>
+    )
+}
+```
+
+### State Management
+- Use React hooks for local state
+- No external state management library currently
+- Props drilling is acceptable for current complexity
+- Consider context for deeply nested props
+
+## TypeScript Conventions
+
+### Type Definitions
+- All interfaces in `/types/index.ts`
+- Use interfaces over types when possible
+- Export all types/interfaces
+- Strict null checks enabled
+
+### Common Patterns
+```typescript
+// User type with optional fields
+export interface User {
+    id: string
+    name: string
+    walletAddress?: string  // Optional for guests
+    isGuest: boolean
+}
+
+// Discriminated unions for card values
+type CardValue = number | string | '?'
+
+// Const assertions for configurations
+export const CARD_TYPES = {
+    fibonacci: { ... }
+} as const
+```
+
+## Styling Standards
+
+### Tailwind CSS Usage
+- Utility-first approach
+- Custom classes in `globals.css` using @layer
+- Component classes: `.card`, `.btn-primary`, `.input-field`
+- Responsive design: mobile-first approach
+
+### Custom Styling Patterns
+```css
+/* Vintage/distressed aesthetic */
+.torn-paper-effect { /* clip-path polygons */ }
+.distressed-text { /* custom text effects */ }
+.glass-effect { /* backdrop blur effects */ }
+```
+
+### Color Scheme
+- Primary: Black (#000000)
+- Background: White with grid pattern
+- Accents: Card type specific gradients
+- Shadows: Subtle gray shadows
+
+## Component Patterns
+
+### Client Components
+- Mark with `'use client'` directive
+- Used for interactivity, state, effects
+- All form components are client components
+
+### Props Interface Pattern
+```typescript
+interface ComponentProps {
+    required: string
+    optional?: number
+    callback: (value: string) => void
+    children?: React.ReactNode
+}
+```
+
+### Event Handler Naming
+- Prefix with `handle` (e.g., `handleSubmit`)
+- Props: `onEventName` (e.g., `onLeaveRoom`)
+
+## Future Web3 Integration
+
+### Wallet Connection
+- Provider pattern in `/components/providers/Web3Provider.tsx`
+- Support multiple wallet types
+- Graceful fallback for non-Web3 users
+
+### Smart Contract Interaction
+- Separate contract calls in utils
+- Type-safe contract interfaces
+- Error handling for blockchain failures
+
+### Gas Optimization
+- Batch operations when possible
+- Minimize on-chain storage
+- Use events for historical data
+
+## Best Practices
+
+### Security
+- Never expose private keys
+- Validate all user inputs
+- Sanitize room codes and names
+- Use environment variables for sensitive data
+
+### Performance
+- Lazy load heavy components
+- Optimize images in `/public`
+- Use Next.js Image component
+- Minimize bundle size
+
+### Accessibility
+- Semantic HTML elements
+- ARIA labels where needed
+- Keyboard navigation support
+- Color contrast compliance
+
+### Error Handling
+- Use react-hot-toast for user feedback
+- Graceful error boundaries
+- Meaningful error messages
+- Log errors appropriately
+
+## Git Commit Conventions
+- feat: New features
+- fix: Bug fixes
+- refactor: Code refactoring
+- docs: Documentation updates
+- style: Formatting changes
+- test: Test additions/changes
+- chore: Build/config updates
+
+## Testing Strategy
+- Unit tests for utilities
+- Component tests for interactions
+- E2E tests for critical flows
+- Test Web3 interactions with mocks
+
+## Development Workflow
+1. Check TypeScript types: `npm run type-check`
+2. Run linter: `npm run lint`
+3. Test changes locally: `npm run dev`
+4. Build before committing: `npm run build`
+
+## Environment Variables
+- Use `.env.local` for local development
+- Reference `env.example` for required vars
+- Never commit `.env` files
+- Validate env vars at runtime
