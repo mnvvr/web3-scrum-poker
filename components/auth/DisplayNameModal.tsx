@@ -167,9 +167,9 @@ export function DisplayNameModal({ isOpen, onClose, onSubmit, user, isGuest, ens
                                             disabled={useAnonymous}
                                         />
                                         {/* Hover Tooltip */}
-                                        <div className="absolute left-full top-1/2 transform -translate-y-1/2 ml-2 px-3 py-2 bg-black text-white text-xs rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none whitespace-nowrap z-20">
+                                        <div className="absolute left-1/2 top-full transform -translate-x-1/2 mt-2 px-3 py-2 bg-black text-white text-xs rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none whitespace-nowrap z-20">
                                             This is how your team will see you
-                                            <div className="absolute top-1/2 right-full transform -translate-y-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-r-black"></div>
+                                            <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-b-4 border-transparent border-t-black"></div>
                                         </div>
                                     </div>
                                 </div>
