@@ -31,7 +31,7 @@ export function RoomCreation({ onCreateRoom, onJoinRoom, isCreating, userMode, d
     const [cardType, setCardType] = useState<CardType>('fibonacci')
     const [showCardTypes, setShowCardTypes] = useState(false)
     const [showAdvancedSettings, setShowAdvancedSettings] = useState(false)
-    
+
     // Error states
     const [errors, setErrors] = useState<{
         roomName?: string
@@ -62,13 +62,13 @@ export function RoomCreation({ onCreateRoom, onJoinRoom, isCreating, userMode, d
 
     const handleCreateRoom = (e: React.FormEvent) => {
         e.preventDefault()
-        
+
         // Clear previous errors
         setErrors({})
-        
+
         // Validate form
         const roomNameError = validateRoomName(roomName)
-        
+
         if (roomNameError) {
             setErrors({ roomName: roomNameError })
             return
@@ -93,9 +93,9 @@ export function RoomCreation({ onCreateRoom, onJoinRoom, isCreating, userMode, d
     const handleJoinRoom = (code: string) => {
         // Clear previous errors
         setErrors({})
-        
+
         const joinCodeError = validateJoinCode(code)
-        
+
         if (joinCodeError) {
             setErrors({ joinCode: joinCodeError })
             return
@@ -225,9 +225,8 @@ export function RoomCreation({ onCreateRoom, onJoinRoom, isCreating, userMode, d
                                     }
                                 }}
                                 placeholder="Sprint 17 – Backend Refactor Tasks"
-                                className={`w-full px-4 sm:px-6 py-3 sm:py-4 border rounded-2xl focus:outline-none focus:ring-4 focus:ring-gray-200 focus:border-black text-base sm:text-lg transition-all duration-300 hover:border-black font-distressed vintage-paper focus-ring ${
-                                    errors.roomName ? 'border-red-500' : 'border-black'
-                                }`}
+                                className={`w-full px-4 sm:px-6 py-3 sm:py-4 border rounded-2xl focus:outline-none focus:ring-4 focus:ring-gray-200 focus:border-black text-base sm:text-lg transition-all duration-300 hover:border-black font-distressed vintage-paper focus-ring ${errors.roomName ? 'border-red-500' : 'border-black'
+                                    }`}
                                 maxLength={50}
                             />
                             <p className="text-gray-500 text-sm mt-2 ml-2 font-distressed">
@@ -299,8 +298,8 @@ export function RoomCreation({ onCreateRoom, onJoinRoom, isCreating, userMode, d
                                                         setShowCardTypes(false)
                                                     }}
                                                     className={`group/card relative p-3 border border-black rounded-lg text-left transition-all duration-300 hover:shadow-md transform hover:scale-105 vintage-paper ${cardType === type
-                                                            ? 'bg-gray-100 border-black shadow-sm'
-                                                            : 'bg-white hover:border-black'
+                                                        ? 'bg-gray-100 border-black shadow-sm'
+                                                        : 'bg-white hover:border-black'
                                                         }`}
                                                     style={{
                                                         boxShadow: cardType === type
@@ -407,8 +406,8 @@ export function RoomCreation({ onCreateRoom, onJoinRoom, isCreating, userMode, d
                                                 type="button"
                                                 onClick={() => setRevealMode('auto')}
                                                 className={`p-4 border border-black rounded-xl text-left transition-all duration-300 vintage-paper ${revealMode === 'auto'
-                                                        ? 'bg-gray-100 border-black shadow-md'
-                                                        : 'bg-white hover:border-black'
+                                                    ? 'bg-gray-100 border-black shadow-md'
+                                                    : 'bg-white hover:border-black'
                                                     }`}
                                             >
                                                 <div className="flex items-center gap-3 mb-2">
@@ -429,8 +428,8 @@ export function RoomCreation({ onCreateRoom, onJoinRoom, isCreating, userMode, d
                                                 type="button"
                                                 onClick={() => setRevealMode('manual')}
                                                 className={`p-4 border border-black rounded-xl text-left transition-all duration-300 vintage-paper ${revealMode === 'manual'
-                                                        ? 'bg-gray-100 border-black shadow-md'
-                                                        : 'bg-white hover:border-black'
+                                                    ? 'bg-gray-100 border-black shadow-md'
+                                                    : 'bg-white hover:border-black'
                                                     }`}
                                             >
                                                 <div className="flex items-center gap-3 mb-2">
@@ -471,6 +470,7 @@ export function RoomCreation({ onCreateRoom, onJoinRoom, isCreating, userMode, d
                                                 rows={3}
                                                 maxLength={300}
                                             />
+
                                         </div>
                                         <p className="text-gray-500 text-sm mt-2 ml-2 font-distressed">
                                             Can be edited or skipped after room starts

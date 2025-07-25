@@ -26,6 +26,7 @@ export interface Story {
     id: string
     title: string
     description?: string
+    reference?: string
     votes: Vote[]
     isRevealed: boolean
     average?: number

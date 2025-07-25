@@ -3,11 +3,15 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import { Toaster } from 'react-hot-toast'
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({
+    subsets: ['latin'],
+    variable: '--font-inter',
+    display: 'swap',
+})
 
 export const metadata: Metadata = {
     title: 'Web3 Scrum Poker',
-    description: 'Lightweight, transparent and accessible planning poker experience built with Web3 in mind',
+    description: 'Decentralized planning poker for modern teams',
 }
 
 export default function RootLayout({
@@ -16,7 +20,7 @@ export default function RootLayout({
     children: React.ReactNode
 }) {
     return (
-        <html lang="en">
+        <html lang="en" className={inter.variable}>
             <body className={inter.className}>
                 {children}
                 <Toaster

@@ -55,10 +55,15 @@ export default function RoomPage() {
 
             // Add sample stories with votes
             const stories = [
-                createStory('Implement user authentication', 'Add login/logout functionality with JWT tokens'),
+                createStory('Implement user authentication', 'Add comprehensive login/logout functionality with JWT tokens, password validation, user session management, role-based access control, and secure password reset flow. This includes implementing OAuth2 integration, two-factor authentication, and audit logging for security compliance.'),
                 createStory('Design responsive dashboard', 'Create mobile-friendly dashboard layout'),
                 createStory('Setup CI/CD pipeline', 'Configure automated testing and deployment')
             ]
+
+            // Add reference links to stories
+            stories[0].reference = 'https://jira.company.com/browse/AUTH-123'
+            stories[1].reference = 'https://github.com/company/dashboard/pull/456'
+            stories[2].reference = 'https://confluence.company.com/display/DEVOPS/CICD+Setup'
 
             // Start with no votes - clean voting state
             const firstStory = stories[0]
@@ -88,6 +93,19 @@ export default function RoomPage() {
     const handleEndSession = () => {
         toast.success('Session ended')
         router.push('/room/end')
+    }
+
+    const handleUpdateStory = (updatedStory: any) => {
+        if (currentRoom) {
+            const updatedRoom = {
+                ...currentRoom,
+                stories: currentRoom.stories.map(story =>
+                    story.id === updatedStory.id ? updatedStory : story
+                )
+            }
+            setCurrentRoom(updatedRoom)
+            toast.success('Task updated successfully')
+        }
     }
 
     if (isLoading) {
@@ -128,6 +146,7 @@ export default function RoomPage() {
             currentUser={currentUser}
             onLeaveRoom={handleLeaveRoom}
             onEndSession={handleEndSession}
+            onUpdateStory={handleUpdateStory}
         />
     )
 } 

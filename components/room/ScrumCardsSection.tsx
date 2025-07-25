@@ -14,6 +14,7 @@ interface ScrumCardsSectionProps {
     votedCount: number
     totalCount: number
     participants: User[]
+    isEditingStory?: boolean
 }
 
 export function ScrumCardsSection({
@@ -25,26 +26,40 @@ export function ScrumCardsSection({
     votes,
     votedCount,
     totalCount,
-    participants
+    participants,
+    isEditingStory = false
 }: ScrumCardsSectionProps) {
     return (
         <div className="mb-8">
             {/* Cards Header with Voting Progress */}
             <div className="text-center mb-8">
-                {!isRevealed && (
-                    <h2 className="text-3xl font-bold text-black mb-4 font-brand transform -rotate-1">Pick a card to estimate</h2>
-                )}
-                <p className="text-gray-600 mb-6 font-distressed transform rotate-1">
-                    {isRevealed ? 'Votes revealed!' : 'Your selection is private until reveal'}
-                </p>
+                {/* Clear State Indicators */}
+                <div className="mb-6">
+                    {!isRevealed && (
+                        <h2 className="text-2xl font-bold text-black mb-2 font-brand">
+                            {isVoting ? 'Pick a card to estimate' : 'Voting in progress...'}
+                        </h2>
+                    )}
+                    {isRevealed && (
+                        <h2 className="text-2xl font-bold text-green-600 mb-2 font-brand">
+                            Votes revealed!
+                        </h2>
+                    )}
 
-                {/* Voting Progress */}
-                {isVoting && (
-                    <VotingProgress
-                        votedCount={votedCount}
-                        totalCount={totalCount}
-                    />
-                )}
+                    <p className="text-gray-600 text-sm font-distressed">
+                        {isRevealed
+                            ? 'See the results below'
+                            : 'Your selection is private until reveal'
+                        }
+                    </p>
+                </div>
+
+                {/* Voting Progress - Always show */}
+                <VotingProgress
+                    votedCount={votedCount}
+                    totalCount={totalCount}
+                    isRevealed={isRevealed}
+                />
             </div>
 
             {/* Scrum Cards */}
@@ -55,6 +70,7 @@ export function ScrumCardsSection({
                 isRevealed={isRevealed}
                 votes={votes}
                 participants={participants}
+                isEditingStory={isEditingStory}
             />
         </div>
     )

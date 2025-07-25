@@ -275,8 +275,8 @@ export default function CreateRoomPage() {
                                     <button
                                         onClick={handleCopyCode}
                                         className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-300 ${isCopied
-                                                ? 'bg-black text-white'
-                                                : 'bg-white text-black border border-black hover:bg-black hover:text-white'
+                                            ? 'bg-black text-white'
+                                            : 'bg-white text-black border border-black hover:bg-black hover:text-white'
                                             }`}
                                     >
                                         {isCopied ? (

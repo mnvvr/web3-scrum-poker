@@ -7,19 +7,22 @@ import { CurrentStory } from './CurrentStory'
 import { ScrumCardsSection } from './ScrumCardsSection'
 import { LogOut } from 'lucide-react'
 import toast from 'react-hot-toast'
+import { motion } from 'framer-motion'
 
 interface RoomProps {
     room: RoomType
     currentUser: User
     onLeaveRoom: () => void
     onEndSession?: () => void
+    onUpdateStory?: (updatedStory: Story) => void
 }
 
-export function Room({ room, currentUser, onLeaveRoom, onEndSession }: RoomProps) {
+export function Room({ room, currentUser, onLeaveRoom, onEndSession, onUpdateStory }: RoomProps) {
     const [currentStory, setCurrentStory] = useState<Story | null>(null)
     const [selectedValue, setSelectedValue] = useState<number | string | null>(null)
     const [isVoting, setIsVoting] = useState(true)
     const [isRevealed, setIsRevealed] = useState(false)
+    const [isEditingStory, setIsEditingStory] = useState(false)
 
     useEffect(() => {
         if (room.stories.length > 0) {
@@ -62,23 +65,33 @@ export function Room({ room, currentUser, onLeaveRoom, onEndSession }: RoomProps
 
     if (!currentStory) {
         return (
-            <div className="min-h-screen bg-white flex items-center justify-center">
-                <div className="text-center">
-                    <h2 className="text-2xl font-bold text-black mb-4 font-brand">No Stories Available</h2>
-                    <p className="text-gray-600">Add some user stories to start planning</p>
+            <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+                <div className="text-center max-w-md">
+                    <div className="bg-white rounded-lg p-8 shadow-sm border border-gray-200">
+                        <h2 className="text-2xl font-bold text-black mb-4 font-brand">No Stories Available</h2>
+                        <p className="text-gray-600 mb-6 font-distressed">Add some user stories to start planning</p>
+                        <button
+                            onClick={onLeaveRoom}
+                            className="bg-black text-white font-medium py-2 px-4 rounded-lg hover:bg-gray-800 transition-colors font-brand"
+                        >
+                            Leave Room
+                        </button>
+                    </div>
                 </div>
             </div>
         )
     }
 
     return (
-        <div className="min-h-screen bg-white relative overflow-hidden">
-            {/* Background Texture */}
-            <div className="absolute inset-0 bg-gradient-to-br from-gray-50 to-white opacity-30"></div>
-            <div className="absolute inset-0" style={{
-                backgroundImage: `repeating-linear-gradient(45deg, transparent, transparent 2px, rgba(0,0,0,0.01) 2px, rgba(0,0,0,0.01) 4px)`
-            }}></div>
+        <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/20 to-purple-50/20 relative">
+            {/* Subtle background pattern */}
+            <div className="absolute inset-0 opacity-30">
+                <div className="absolute top-20 left-20 w-32 h-32 bg-gradient-to-br from-blue-400/20 to-purple-400/20 rounded-full blur-3xl"></div>
+                <div className="absolute bottom-20 right-20 w-40 h-40 bg-gradient-to-br from-purple-400/20 to-pink-400/20 rounded-full blur-3xl"></div>
+                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-60 h-60 bg-gradient-to-br from-blue-300/10 to-purple-300/10 rounded-full blur-3xl"></div>
+            </div>
 
+            {/* Header */}
             <RoomHeader
                 room={room}
                 currentUser={currentUser}
@@ -88,11 +101,17 @@ export function Room({ room, currentUser, onLeaveRoom, onEndSession }: RoomProps
                 onEndSession={onEndSession}
                 isVoting={isVoting}
                 isRevealed={isRevealed}
+                isEditingStory={isEditingStory}
             />
 
-            <div className="container mx-auto px-4 py-8 relative z-10">
+            {/* Main Content */}
+            <div className="container mx-auto px-4 py-6 max-w-6xl relative z-10">
                 {/* Current Story */}
-                <CurrentStory story={currentStory} />
+                <CurrentStory
+                    story={currentStory}
+                    onUpdateStory={onUpdateStory}
+                    onEditStateChange={setIsEditingStory}
+                />
 
                 {/* Scrum Cards Section */}
                 <ScrumCardsSection
@@ -105,18 +124,26 @@ export function Room({ room, currentUser, onLeaveRoom, onEndSession }: RoomProps
                     votedCount={votedParticipants.length}
                     totalCount={room.participants.length}
                     participants={room.participants}
+                    isEditingStory={isEditingStory}
                 />
             </div>
 
             {/* Leave Button - Bottom Right */}
-            <div className="fixed bottom-6 right-6 z-[9999]">
-                <button
+            <div className="fixed bottom-6 right-6 z-50">
+                <motion.button
                     onClick={onLeaveRoom}
-                    className="flex items-center gap-2 bg-white text-black font-semibold py-3 px-4 rounded-lg border-2 border-black hover:bg-gray-50 transition-all duration-300 shadow-lg vintage-btn"
+                    disabled={isEditingStory}
+                    className={`flex items-center gap-2 font-medium py-3 px-4 rounded-lg border transition-all duration-300 shadow-lg font-brand ${isEditingStory
+                            ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed'
+                            : 'bg-white text-black border-gray-300 hover:bg-gray-50'
+                        }`}
+                    whileHover={isEditingStory ? {} : { scale: 1.05, shadow: "0 10px 25px rgba(0,0,0,0.15)" }}
+                    whileTap={isEditingStory ? {} : { scale: 0.95 }}
+                    title={isEditingStory ? "Please finish editing the task first" : "Leave room"}
                 >
                     <LogOut className="w-5 h-5" />
-                    <span>Leave Room</span>
-                </button>
+                    <span className="hidden sm:inline">Leave Room</span>
+                </motion.button>
             </div>
         </div>
     )

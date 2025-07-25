@@ -39,9 +39,10 @@ module.exports = {
                 slideUp: { '0%': { transform: 'translateY(10px)', opacity: '0' }, '100%': { transform: 'translateY(0)', opacity: '1' }, },
             },
             fontFamily: {
-                'brand': ['Times New Roman', 'serif'],
-                'distressed': ['Courier New', 'monospace'],
-                'hand-drawn': ['Brush Script MT', 'cursive'],
+                'brand': ['Inter', 'sans-serif'],
+                'distressed': ['Inter', 'sans-serif'],
+                'hand-drawn': ['Inter', 'sans-serif'],
+                'inter': ['Inter', 'sans-serif'],
             }
         },
     },
