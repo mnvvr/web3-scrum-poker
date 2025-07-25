@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'
 import { AlertCircle } from 'lucide-react'
 
 interface FormErrorProps {
-    error: string | null
+    error: string | null | undefined
     className?: string
 }
 
@@ -27,7 +27,7 @@ export function FormError({ error, className = '' }: FormErrorProps) {
 
 interface FormFieldProps {
     label: string
-    error?: string
+    error?: string | undefined
     required?: boolean
     children: React.ReactNode
     className?: string

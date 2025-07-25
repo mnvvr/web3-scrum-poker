@@ -6,7 +6,7 @@ import { LoadingSpinner } from './LoadingSpinner'
 interface LoadingButtonProps {
     isLoading: boolean
     children: React.ReactNode
-    onClick?: () => void
+    onClick?: (e?: React.MouseEvent<HTMLButtonElement>) => void
     type?: 'button' | 'submit'
     variant?: 'primary' | 'secondary'
     disabled?: boolean
@@ -25,7 +25,7 @@ export function LoadingButton({
     loadingText
 }: LoadingButtonProps) {
     const baseClasses = "relative inline-flex items-center justify-center px-6 py-3 font-bold rounded-lg transition-all duration-200 overflow-hidden vintage-btn enhanced-button"
-    
+
     const variantClasses = {
         primary: "bg-black text-white hover:bg-gray-800",
         secondary: "bg-white text-black border-2 border-black hover:bg-gray-50"
@@ -38,9 +38,8 @@ export function LoadingButton({
             type={type}
             onClick={onClick}
             disabled={isDisabled}
-            className={`${baseClasses} ${variantClasses[variant]} ${className} ${
-                isDisabled ? 'opacity-70 cursor-not-allowed' : ''
-            } focus-ring`}
+            className={`${baseClasses} ${variantClasses[variant]} ${className} ${isDisabled ? 'opacity-70 cursor-not-allowed' : ''
+                } focus-ring`}
             whileHover={!isDisabled ? { scale: 1.02 } : {}}
             whileTap={!isDisabled ? { scale: 0.98 } : {}}
             aria-disabled={isDisabled}
@@ -55,7 +54,7 @@ export function LoadingButton({
                     <LoadingSpinner size="small" />
                 </motion.div>
             )}
-            
+
             <motion.span
                 animate={{
                     x: isLoading ? 12 : 0,

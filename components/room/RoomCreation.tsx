@@ -138,7 +138,7 @@ export function RoomCreation({ onCreateRoom, onJoinRoom, isCreating, userMode, d
                     </div>
                     <LoadingButton
                         onClick={(e) => {
-                            e.preventDefault()
+                            e?.preventDefault()
                             handleJoinRoom(joinCode)
                         }}
                         isLoading={false}
