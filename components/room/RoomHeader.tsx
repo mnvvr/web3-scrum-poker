@@ -81,13 +81,25 @@ export function RoomHeader({
             x = tooltipWidth / 2 + 10
         }
 
-        // For team tooltip, always show below and point up
         const tooltipHeight = 60 // Approximate tooltip height
         let arrowUp = true
 
-        // If tooltip would go off bottom of screen, adjust position
-        if (y + tooltipHeight > viewportHeight) {
-            y = viewportHeight - tooltipHeight - 20 // Keep some margin from bottom
+        // Special handling for team tooltip - always show below
+        if (tooltipType === 'team') {
+            // Always show below the button
+            y = rect.bottom + 10
+            arrowUp = true
+
+            // If it would go off bottom, move it up but keep arrow pointing up
+            if (y + tooltipHeight > viewportHeight) {
+                y = viewportHeight - tooltipHeight - 20
+            }
+        } else {
+            // For other tooltips, use dynamic positioning
+            if (y + tooltipHeight > viewportHeight) {
+                y = rect.top - tooltipHeight - 10
+                arrowUp = false
+            }
         }
 
         setTooltipPosition({ x, y, arrowUp })
@@ -137,8 +149,9 @@ export function RoomHeader({
                         <div className="hidden md:block relative">
                             <button
                                 onClick={() => setShowParticipants(!showParticipants)}
+                                onMouseEnter={(e) => handleMouseEnter(e, 'team')}
+                                onMouseLeave={handleMouseLeave}
                                 className="flex items-center gap-2 text-gray-600 hover:text-black transition-colors p-2 rounded-lg hover:bg-gray-50 hover:shadow-sm cursor-pointer"
-                                title={showParticipants ? "Hide participants list" : "View participants and their votes"}
                             >
                                 <span className="text-sm text-gray-500 font-medium font-distressed">Team:</span>
                                 <span className="text-sm font-medium text-black font-brand">
@@ -154,8 +167,9 @@ export function RoomHeader({
                         {/* Participants Button - Mobile */}
                         <button
                             onClick={() => setShowParticipants(!showParticipants)}
+                            onMouseEnter={(e) => handleMouseEnter(e, 'team')}
+                            onMouseLeave={handleMouseLeave}
                             className="md:hidden flex items-center gap-2 text-gray-600 hover:text-black transition-colors p-2 rounded-lg hover:bg-gray-50 hover:shadow-sm"
-                            title={showParticipants ? "Hide participants list" : "View participants and their votes"}
                         >
                             <Users className="w-5 h-5" />
                             <span className="text-sm font-medium">{room.participants.length}</span>
@@ -316,6 +330,7 @@ export function RoomHeader({
                     }}
                 >
                     <div className="bg-black text-white text-xs px-3 py-2 rounded-lg whitespace-nowrap border border-white/20 font-medium shadow-xl backdrop-blur-sm">
+                        {showTooltip === 'team' && (showParticipants ? "Hide participants list" : "View participants and their votes")}
                         {showTooltip === 'reveal' && (isEditingStory ? "Please finish editing the task first" : "Show all team votes and calculate the final estimate")}
                         {showTooltip === 'new' && (isEditingStory ? "Please finish editing the task first" : "Start a new voting round")}
                         {showTooltip === 'end' && (isEditingStory ? "Please finish editing the task first" : "End the current session")}
