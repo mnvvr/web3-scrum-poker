@@ -62,6 +62,10 @@ export function RoomHeader({
 
     const handleMouseEnter = (e: React.MouseEvent, tooltipType: string) => {
         const rect = e.currentTarget.getBoundingClientRect()
+
+        // Check if window is available (client-side only)
+        if (typeof window === 'undefined') return
+
         const viewportWidth = window.innerWidth
         const viewportHeight = window.innerHeight
 
@@ -317,8 +321,8 @@ export function RoomHeader({
                         {/* Dynamic arrow direction */}
                         <div
                             className={`absolute left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-transparent ${tooltipPosition.arrowUp
-                                    ? 'bottom-full border-b-4 border-b-black'
-                                    : 'top-full border-t-4 border-t-black'
+                                ? 'bottom-full border-b-4 border-b-black'
+                                : 'top-full border-t-4 border-t-black'
                                 }`}
                         ></div>
                     </div>
