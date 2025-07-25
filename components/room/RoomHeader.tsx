@@ -125,7 +125,7 @@ export function RoomHeader({
                                             ? 'bg-gray-400 text-gray-200 cursor-not-allowed'
                                             : 'bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700'
                                             }`}
-                                        title={isEditingStory ? "Please finish editing the task first" : "Reveal all votes and show results"}
+                                        title={isEditingStory ? "Please finish editing the task first" : "Show all team votes and calculate the final estimate"}
                                     >
                                         Reveal Votes
                                     </button>

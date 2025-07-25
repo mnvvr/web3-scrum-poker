@@ -134,12 +134,12 @@ export function Room({ room, currentUser, onLeaveRoom, onEndSession, onUpdateSto
                     onClick={onLeaveRoom}
                     disabled={isEditingStory}
                     className={`flex items-center gap-2 font-medium py-3 px-4 rounded-lg border transition-all duration-300 shadow-lg font-brand ${isEditingStory
-                            ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed'
-                            : 'bg-white text-black border-gray-300 hover:bg-gray-50'
+                        ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed'
+                        : 'bg-white text-black border-gray-300 hover:bg-gray-50'
                         }`}
                     whileHover={isEditingStory ? {} : { scale: 1.05, shadow: "0 10px 25px rgba(0,0,0,0.15)" }}
                     whileTap={isEditingStory ? {} : { scale: 0.95 }}
-                    title={isEditingStory ? "Please finish editing the task first" : "Leave room"}
+                    title={isEditingStory ? "Please finish editing the task first" : "Leave the planning room and return to homepage"}
                 >
                     <LogOut className="w-5 h-5" />
                     <span className="hidden sm:inline">Leave Room</span>
