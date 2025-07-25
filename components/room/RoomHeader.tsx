@@ -121,7 +121,7 @@ export function RoomHeader({
                                     <button
                                         onClick={onRevealVotes}
                                         disabled={isEditingStory}
-                                        className={`font-medium py-2 px-4 rounded-lg transition-all duration-300 text-sm font-brand shadow-md hover:shadow-lg transform hover:scale-105 ${isEditingStory
+                                        className={`reveal-votes-btn font-medium py-2 px-4 rounded-lg transition-all duration-300 text-sm font-brand shadow-md hover:shadow-lg transform hover:scale-105 ${isEditingStory
                                             ? 'bg-gray-400 text-gray-200 cursor-not-allowed'
                                             : 'bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700'
                                             }`}
@@ -135,7 +135,7 @@ export function RoomHeader({
                                         <button
                                             onClick={onResetVotes}
                                             disabled={isEditingStory}
-                                            className={`font-medium py-2 px-4 border rounded-lg transition-all duration-300 text-sm font-brand shadow-sm hover:shadow-md transform hover:scale-105 ${isEditingStory
+                                            className={`header-btn font-medium py-2 px-4 border rounded-lg transition-all duration-300 text-sm font-brand shadow-sm hover:shadow-md transform hover:scale-105 ${isEditingStory
                                                 ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed'
                                                 : 'bg-white text-black border-gray-300 hover:bg-gray-50 hover:border-gray-400'
                                                 }`}
@@ -147,7 +147,7 @@ export function RoomHeader({
                                             <button
                                                 onClick={onEndSession}
                                                 disabled={isEditingStory}
-                                                className={`font-medium py-2 px-4 rounded-lg transition-all duration-300 text-sm font-brand shadow-md hover:shadow-lg transform hover:scale-105 ${isEditingStory
+                                                className={`header-btn font-medium py-2 px-4 rounded-lg transition-all duration-300 text-sm font-brand shadow-md hover:shadow-lg transform hover:scale-105 ${isEditingStory
                                                     ? 'bg-gray-400 text-gray-200 cursor-not-allowed'
                                                     : 'bg-gradient-to-r from-red-600 to-pink-600 text-white hover:from-red-700 hover:to-pink-700'
                                                     }`}

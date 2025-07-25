@@ -2203,3 +2203,37 @@ select:focus-visible,
     max-width: min(200px, calc(100vw - 20px));
     left: clamp(10px, 50%, calc(100vw - 210px));
 }
+
+/* Special tooltip for reveal votes button - show below */
+.reveal-votes-btn[title]:hover::after {
+    bottom: auto;
+    top: 100%;
+    margin-bottom: auto;
+    margin-top: 8px;
+}
+
+.reveal-votes-btn[title]:hover::before {
+    bottom: auto;
+    top: 100%;
+    margin-bottom: auto;
+    margin-top: 2px;
+    border-top-color: transparent;
+    border-bottom-color: rgba(0, 0, 0, 0.95);
+}
+
+/* Header buttons tooltip - show below */
+.header-btn[title]:hover::after {
+    bottom: auto;
+    top: 100%;
+    margin-bottom: auto;
+    margin-top: 8px;
+}
+
+.header-btn[title]:hover::before {
+    bottom: auto;
+    top: 100%;
+    margin-bottom: auto;
+    margin-top: 2px;
+    border-top-color: transparent;
+    border-bottom-color: rgba(0, 0, 0, 0.95);
+}
