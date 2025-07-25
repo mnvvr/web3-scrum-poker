@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { ArrowRight, Users, Zap, Shield, Globe } from 'lucide-react'
 import { CARD_TYPES } from '@/types'
+import { LoadingButton } from '@/components/ui/LoadingButton'
 
 export default function HomePage() {
     const [hoveredCard, setHoveredCard] = useState<string | null>(null)
@@ -31,42 +32,46 @@ export default function HomePage() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8 }}
                     >
-                        <h1 className="text-5xl md:text-7xl font-bold text-black mb-6 font-brand">
-                            Web3 Scrum Poker
+                        <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold mb-6 font-brand leading-tight">
+                            <span className="text-gradient-web3">Web3</span>{' '}
+                            <span className="text-black">Scrum Poker</span>
                         </h1>
-                        <p className="text-xl md:text-2xl text-gray-600 mb-8 font-distressed max-w-3xl mx-auto leading-relaxed">
+                        <p className="text-lg sm:text-xl md:text-2xl text-gray-600 mb-8 font-distressed max-w-3xl mx-auto leading-relaxed px-4">
                             Decentralized planning poker for modern teams.
-                            <br />
+                            <br className="hidden sm:block" />
                             <span className="text-black font-medium">Transparent, secure, and accessible.</span>
                         </p>
 
                         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-                            <motion.button
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                                className="bg-black text-white font-bold py-4 px-8 rounded-lg text-lg flex items-center gap-2 hover:bg-gray-800 transition-colors vintage-btn"
+                            <LoadingButton
+                                isLoading={false}
+                                className="py-4 px-8 text-lg"
                                 onClick={() => window.location.href = '/room/create'}
                             >
-                                Try It Free
-                                <ArrowRight className="w-5 h-5" />
-                            </motion.button>
-                            <motion.button
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                                className="bg-white text-black font-bold py-4 px-8 rounded-lg text-lg border-2 border-black hover:bg-gray-50 transition-colors vintage-btn"
+                                <span className="flex items-center gap-2">
+                                    Try It Free
+                                    <ArrowRight className="w-5 h-5" />
+                                </span>
+                            </LoadingButton>
+                            <LoadingButton
+                                isLoading={false}
+                                variant="secondary"
+                                className="py-4 px-8 text-lg"
                                 onClick={() => window.location.href = '/room/create?mode=wallet'}
                             >
-                                Connect Wallet
-                                <Zap className="w-5 h-5" />
-                            </motion.button>
+                                <span className="flex items-center gap-2">
+                                    Connect Wallet
+                                    <Zap className="w-5 h-5" />
+                                </span>
+                            </LoadingButton>
                         </div>
                     </motion.div>
 
-                    {/* Floating Elements */}
-                    <div className="floating-element absolute top-20 left-10 text-4xl opacity-10">🎯</div>
-                    <div className="floating-element absolute top-40 right-20 text-3xl opacity-10">💡</div>
-                    <div className="floating-element absolute bottom-20 left-20 text-2xl opacity-10">🚀</div>
-                    <div className="floating-element absolute bottom-40 right-10 text-3xl opacity-10">✨</div>
+                    {/* Enhanced Floating Elements */}
+                    <div className="floating-element absolute top-20 left-10 text-4xl opacity-10 gentle-float">🎯</div>
+                    <div className="floating-element absolute top-40 right-20 text-3xl opacity-10 gentle-float">💡</div>
+                    <div className="floating-element absolute bottom-20 left-20 text-2xl opacity-10 gentle-float">🚀</div>
+                    <div className="floating-element absolute bottom-40 right-10 text-3xl opacity-10 gentle-float">✨</div>
                 </div>
             </section>
 
@@ -80,26 +85,27 @@ export default function HomePage() {
                         viewport={{ once: true }}
                         className="text-center mb-16"
                     >
-                        <h2 className="text-4xl font-bold text-black mb-4 font-brand">How It Works</h2>
+                        <h2 className="text-4xl font-bold text-black mb-4 brand-text-enhanced text-letterpress">How It Works</h2>
                         <p className="text-xl text-gray-600 font-distressed">Simple, transparent, and effective planning</p>
                     </motion.div>
 
-                    <div className="grid md:grid-cols-3 gap-8">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.8, delay: 0.1 }}
                             viewport={{ once: true }}
-                            className="poker-card bg-white border border-black rounded-lg p-8 text-center shadow-lg relative overflow-hidden vintage-paper"
+                            className="poker-card bg-white border border-black rounded-lg p-6 md:p-8 text-center shadow-lg relative overflow-hidden vintage-paper-premium"
                             style={{
-                                boxShadow: '6px 6px 0 rgba(0, 0, 0, 0.15), 12px 12px 0 rgba(0, 0, 0, 0.1)',
                                 transform: 'rotate(var(--rotation, -1deg))'
                             }}
                         >
                             <div className="absolute inset-0 bg-gradient-to-br from-gray-50 to-white opacity-30"></div>
+                            <div className="corner-accent corner-accent-tr"></div>
+                            <div className="corner-accent corner-accent-bl"></div>
                             <div className="absolute top-4 right-4 w-8 h-8 text-black/10 font-bold text-lg transform rotate-12">1</div>
                             <div className="relative z-10">
-                                <div className="w-16 h-16 bg-black rounded-full flex items-center justify-center mx-auto mb-6">
+                                <div className="w-16 h-16 gradient-web3-accent rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg icon-treatment">
                                     <Users className="w-8 h-8 text-white" />
                                 </div>
                                 <h3 className="text-2xl font-bold text-black mb-4 font-brand">Create Room</h3>
@@ -112,16 +118,17 @@ export default function HomePage() {
                             whileInView={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.8, delay: 0.2 }}
                             viewport={{ once: true }}
-                            className="poker-card bg-white border border-black rounded-lg p-8 text-center shadow-lg relative overflow-hidden vintage-paper"
+                            className="poker-card bg-white border border-black rounded-lg p-6 md:p-8 text-center shadow-lg relative overflow-hidden vintage-paper-premium"
                             style={{
-                                boxShadow: '6px 6px 0 rgba(0, 0, 0, 0.15), 12px 12px 0 rgba(0, 0, 0, 0.1)',
                                 transform: 'rotate(var(--rotation, 1deg))'
                             }}
                         >
                             <div className="absolute inset-0 bg-gradient-to-br from-gray-50 to-white opacity-30"></div>
+                            <div className="corner-accent corner-accent-tr"></div>
+                            <div className="corner-accent corner-accent-bl"></div>
                             <div className="absolute top-4 right-4 w-8 h-8 text-black/10 font-bold text-lg transform -rotate-12">2</div>
                             <div className="relative z-10">
-                                <div className="w-16 h-16 bg-black rounded-full flex items-center justify-center mx-auto mb-6">
+                                <div className="w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg icon-treatment">
                                     <Zap className="w-8 h-8 text-white" />
                                 </div>
                                 <h3 className="text-2xl font-bold text-black mb-4 font-brand">Vote Privately</h3>
@@ -134,16 +141,17 @@ export default function HomePage() {
                             whileInView={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.8, delay: 0.3 }}
                             viewport={{ once: true }}
-                            className="poker-card bg-white border border-black rounded-lg p-8 text-center shadow-lg relative overflow-hidden vintage-paper"
+                            className="poker-card bg-white border border-black rounded-lg p-6 md:p-8 text-center shadow-lg relative overflow-hidden vintage-paper-premium"
                             style={{
-                                boxShadow: '6px 6px 0 rgba(0, 0, 0, 0.15), 12px 12px 0 rgba(0, 0, 0, 0.1)',
                                 transform: 'rotate(var(--rotation, -1deg))'
                             }}
                         >
                             <div className="absolute inset-0 bg-gradient-to-br from-gray-50 to-white opacity-30"></div>
+                            <div className="corner-accent corner-accent-tr"></div>
+                            <div className="corner-accent corner-accent-bl"></div>
                             <div className="absolute top-4 right-4 w-8 h-8 text-black/10 font-bold text-lg transform rotate-12">3</div>
                             <div className="relative z-10">
-                                <div className="w-16 h-16 bg-black rounded-full flex items-center justify-center mx-auto mb-6">
+                                <div className="w-16 h-16 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg icon-treatment">
                                     <Shield className="w-8 h-8 text-white" />
                                 </div>
                                 <h3 className="text-2xl font-bold text-black mb-4 font-brand">Reveal & Discuss</h3>
@@ -153,6 +161,9 @@ export default function HomePage() {
                     </div>
                 </div>
             </section>
+
+            {/* Section Divider */}
+            <div className="section-divider h-px w-full max-w-4xl mx-auto opacity-60"></div>
 
             {/* Card Types Section */}
             <section className="py-20 px-4 relative z-10 bg-gray-50">
@@ -164,11 +175,11 @@ export default function HomePage() {
                         viewport={{ once: true }}
                         className="text-center mb-16"
                     >
-                        <h2 className="text-4xl font-bold text-black mb-4 font-brand">🎴 Card Types Explained</h2>
+                        <h2 className="text-4xl font-bold text-black mb-4 brand-text-enhanced text-letterpress">🎴 Card Types Explained</h2>
                         <p className="text-xl text-gray-600 font-distressed">Choose the estimation style that fits your team</p>
                     </motion.div>
 
-                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 stagger-children">
                         {Object.entries(CARD_TYPES).map(([type, config], index) => (
                             <motion.div
                                 key={type}
@@ -176,13 +187,18 @@ export default function HomePage() {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.8, delay: index * 0.1 }}
                                 viewport={{ once: true }}
-                                className="bg-white border border-black rounded-lg p-6 shadow-lg relative overflow-hidden vintage-paper group hover:shadow-xl transition-all duration-300"
+                                className="bg-white border border-black rounded-lg p-4 md:p-6 shadow-lg relative overflow-hidden vintage-paper group hover:shadow-xl transition-all duration-300 focus-ring cursor-default"
                                 style={{
                                     boxShadow: '4px 4px 0 rgba(0, 0, 0, 0.1)',
                                     transform: 'rotate(var(--rotation, 0deg))'
                                 }}
                                 onMouseEnter={() => setHoveredCard(type)}
                                 onMouseLeave={() => setHoveredCard(null)}
+                                onFocus={() => setHoveredCard(type)}
+                                onBlur={() => setHoveredCard(null)}
+                                tabIndex={0}
+                                role="article"
+                                aria-label={`${config.name} card type: ${config.description}`}
                             >
                                 {/* Distressed background pattern */}
                                 <div className="absolute inset-0 bg-gradient-to-br from-gray-50 to-white opacity-30"></div>
@@ -241,6 +257,9 @@ export default function HomePage() {
                 </div>
             </section>
 
+            {/* Section Divider */}
+            <div className="section-divider h-px w-full max-w-4xl mx-auto opacity-60"></div>
+
             {/* Web3 without the complexity */}
             <section className="py-20 px-4 relative z-10">
                 <div className="max-w-4xl mx-auto text-center">
@@ -250,7 +269,9 @@ export default function HomePage() {
                         transition={{ duration: 0.8 }}
                         viewport={{ once: true }}
                     >
-                        <h2 className="text-4xl font-bold text-black mb-6 font-brand">Web3 without the complexity</h2>
+                        <h2 className="text-4xl font-bold text-black mb-6 brand-text-enhanced text-letterpress">
+                            <span className="text-gradient-web3 text-glow-subtle">Web3</span> without the complexity
+                        </h2>
                         <p className="text-xl text-gray-600 mb-8 font-distressed">
                             Experience the benefits of blockchain technology without the technical overhead.
                             <br />
@@ -259,7 +280,7 @@ export default function HomePage() {
 
                         <div className="grid md:grid-cols-3 gap-8 mt-12">
                             <div className="text-center">
-                                <div className="w-16 h-16 bg-black rounded-full flex items-center justify-center mx-auto mb-4">
+                                <div className="w-16 h-16 bg-black rounded-full flex items-center justify-center mx-auto mb-4 icon-treatment">
                                     <Shield className="w-8 h-8 text-white" />
                                 </div>
                                 <h3 className="text-xl font-bold text-black mb-2 font-brand">Secure</h3>
@@ -267,7 +288,7 @@ export default function HomePage() {
                             </div>
 
                             <div className="text-center">
-                                <div className="w-16 h-16 bg-black rounded-full flex items-center justify-center mx-auto mb-4">
+                                <div className="w-16 h-16 bg-black rounded-full flex items-center justify-center mx-auto mb-4 icon-treatment">
                                     <Globe className="w-8 h-8 text-white" />
                                 </div>
                                 <h3 className="text-xl font-bold text-black mb-2 font-brand">Transparent</h3>
@@ -275,7 +296,7 @@ export default function HomePage() {
                             </div>
 
                             <div className="text-center">
-                                <div className="w-16 h-16 bg-black rounded-full flex items-center justify-center mx-auto mb-4">
+                                <div className="w-16 h-16 bg-black rounded-full flex items-center justify-center mx-auto mb-4 icon-treatment">
                                     <Users className="w-8 h-8 text-white" />
                                 </div>
                                 <h3 className="text-xl font-bold text-black mb-2 font-brand">Accessible</h3>
@@ -285,6 +306,9 @@ export default function HomePage() {
                     </motion.div>
                 </div>
             </section>
+
+            {/* Section Divider */}
+            <div className="section-divider h-px w-full max-w-4xl mx-auto opacity-60"></div>
 
             {/* Trusted by the Community */}
             <section className="py-20 px-4 relative z-10 bg-gray-50">
@@ -300,7 +324,7 @@ export default function HomePage() {
                         <p className="text-xl text-gray-600 font-distressed">Join teams worldwide using Web3 Scrum Poker</p>
                     </motion.div>
 
-                    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
                         {[
                             { name: 'Alice', role: 'Product Manager', company: 'TechCorp', avatar: '👩‍💼' },
                             { name: 'Bob', role: 'Lead Developer', company: 'DevStudio', avatar: '👨‍💻' },
@@ -313,7 +337,7 @@ export default function HomePage() {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.8, delay: index * 0.1 }}
                                 viewport={{ once: true }}
-                                className="bg-white border border-black rounded-lg p-6 text-center shadow-lg relative overflow-hidden vintage-paper"
+                                className="bg-white border border-black rounded-lg p-4 md:p-6 text-center shadow-lg relative overflow-hidden vintage-paper"
                                 style={{
                                     boxShadow: '4px 4px 0 rgba(0, 0, 0, 0.1)',
                                     transform: 'rotate(var(--rotation, 0deg))'
@@ -332,6 +356,9 @@ export default function HomePage() {
                 </div>
             </section>
 
+            {/* Section Divider */}
+            <div className="section-divider h-px w-full max-w-4xl mx-auto opacity-60"></div>
+
             {/* CTA Section */}
             <section className="py-20 px-4 relative z-10">
                 <div className="max-w-4xl mx-auto text-center">
@@ -347,24 +374,27 @@ export default function HomePage() {
                         </p>
 
                         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                            <motion.button
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                                className="bg-black text-white font-bold py-4 px-8 rounded-lg text-lg flex items-center gap-2 hover:bg-gray-800 transition-colors vintage-btn"
+                            <LoadingButton
+                                isLoading={false}
+                                className="py-4 px-8 text-lg"
                                 onClick={() => window.location.href = '/room/create'}
                             >
-                                Start Planning
-                                <ArrowRight className="w-5 h-5" />
-                            </motion.button>
-                            <motion.button
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                                className="bg-white text-black font-bold py-4 px-8 rounded-lg text-lg border-2 border-black hover:bg-gray-50 transition-colors vintage-btn"
+                                <span className="flex items-center gap-2">
+                                    Start Planning
+                                    <ArrowRight className="w-5 h-5" />
+                                </span>
+                            </LoadingButton>
+                            <LoadingButton
+                                isLoading={false}
+                                variant="secondary"
+                                className="py-4 px-8 text-lg"
                                 onClick={() => window.location.href = '/room/create?mode=wallet'}
                             >
-                                Connect Wallet
-                                <Zap className="w-5 h-5" />
-                            </motion.button>
+                                <span className="flex items-center gap-2">
+                                    Connect Wallet
+                                    <Zap className="w-5 h-5" />
+                                </span>
+                            </LoadingButton>
                         </div>
                     </motion.div>
                 </div>

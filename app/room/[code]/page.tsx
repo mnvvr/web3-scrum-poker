@@ -60,26 +60,10 @@ export default function RoomPage() {
                 createStory('Setup CI/CD pipeline', 'Configure automated testing and deployment')
             ]
 
-            // Add sample votes to the first story (5 participants voted)
+            // Start with no votes - clean voting state
             const firstStory = stories[0]
-            const now = new Date()
-            firstStory.votes = [
-                { userId: user.id, value: 8, timestamp: new Date(now.getTime() - 4000) },           // Demo User: 8 points
-                { userId: participants[0].id, value: 13, timestamp: new Date(now.getTime() - 3000) }, // Alice: 13 points
-                { userId: participants[1].id, value: 5, timestamp: new Date(now.getTime() - 2000) },  // Bob: 5 points
-                { userId: participants[2].id, value: 8, timestamp: new Date(now.getTime() - 1000) },  // Charlie: 8 points
-                { userId: participants[3].id, value: 21, timestamp: now }                            // Diana: 21 points
-            ]
-
-            // Calculate average and variance for the first story
-            const voteValues = firstStory.votes.map(vote => Number(vote.value))
-            const sum = voteValues.reduce((acc, val) => acc + val, 0)
-            const average = sum / voteValues.length
-            const variance = voteValues.reduce((acc, val) => acc + Math.pow(val - average, 2), 0) / voteValues.length
-
-            firstStory.average = average
-            firstStory.variance = variance
-            firstStory.isRevealed = true // Set to true to show vote results immediately
+            firstStory.votes = [] // No votes initially
+            firstStory.isRevealed = false // Not revealed initially
 
             room.stories = stories
 

@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { Users, Hash, Copy, Check, Settings, LogOut } from 'lucide-react'
-import { Room, User } from '@/types'
+import { Room, User, CARD_TYPES } from '@/types'
 import { useState } from 'react'
 import { AnimatePresence } from 'framer-motion'
 
@@ -63,7 +63,7 @@ export function RoomHeader({
                     {/* Room Info */}
                     <div className="flex items-center gap-4">
                         <div>
-                            <h1 className="text-2xl font-bold text-black font-brand">{room.code}</h1>
+                            <h1 className="text-2xl font-bold text-black font-brand">Session Code</h1>
                             <div className="flex items-center gap-2 text-gray-600 text-sm">
                                 <Hash className="w-4 h-4" />
                                 <span className="font-mono">{room.code}</span>
@@ -75,11 +75,18 @@ export function RoomHeader({
                                         {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
                                     </button>
                                     {/* Copy Tooltip */}
-                                    <div className="absolute bottom-full left-0 mb-2 px-2 py-1 bg-black text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none whitespace-nowrap z-20">
+                                    <div className="absolute bottom-full left-0 mb-2 px-2 py-1 bg-black text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none whitespace-nowrap z-[9999]">
                                         Copy room code
                                         <div className="absolute top-full left-2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-black"></div>
                                     </div>
                                 </div>
+                            </div>
+
+                            {/* Card Type Info */}
+                            <div className="mt-3 flex items-center gap-2">
+                                <span className="text-sm text-gray-600 font-distressed">
+                                    Card type: {CARD_TYPES[room.cardType].name}
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -95,7 +102,7 @@ export function RoomHeader({
                                 <span className="font-medium">{room.participants.length} participants</span>
                             </button>
                             {/* Participants Tooltip */}
-                            <div className="absolute bottom-full left-0 mb-2 px-2 py-1 bg-black text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none whitespace-nowrap z-20">
+                            <div className="absolute bottom-full left-0 mb-2 px-2 py-1 bg-black text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none whitespace-nowrap z-[9999]">
                                 View all participants and voting status
                                 <div className="absolute top-full left-4 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-black"></div>
                             </div>
@@ -113,7 +120,7 @@ export function RoomHeader({
                                             Reveal Votes
                                         </button>
                                         {/* Reveal Votes Tooltip */}
-                                        <div className="absolute bottom-full left-0 mb-2 px-2 py-1 bg-black text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none whitespace-nowrap z-20">
+                                        <div className="absolute bottom-full left-0 mb-2 px-2 py-1 bg-black text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none whitespace-nowrap z-[9999]">
                                             Show everyone's votes and calculate results
                                             <div className="absolute top-full left-4 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-black"></div>
                                         </div>
@@ -129,7 +136,7 @@ export function RoomHeader({
                                                 New Vote
                                             </button>
                                             {/* New Vote Tooltip */}
-                                            <div className="absolute bottom-full left-0 mb-2 px-2 py-1 bg-black text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none whitespace-nowrap z-20">
+                                            <div className="absolute bottom-full left-0 mb-2 px-2 py-1 bg-black text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none whitespace-nowrap z-[9999]">
                                                 Start voting on the next story
                                                 <div className="absolute top-full left-4 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-black"></div>
                                             </div>
@@ -143,7 +150,7 @@ export function RoomHeader({
                                                     End Session
                                                 </button>
                                                 {/* End Session Tooltip */}
-                                                <div className="absolute bottom-full left-0 mb-2 px-2 py-1 bg-black text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none whitespace-nowrap z-20">
+                                                <div className="absolute bottom-full left-0 mb-2 px-2 py-1 bg-black text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none whitespace-nowrap z-[9999]">
                                                     Close this planning session
                                                     <div className="absolute top-full left-4 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-black"></div>
                                                 </div>
@@ -153,21 +160,6 @@ export function RoomHeader({
                                 )}
                             </div>
                         )}
-
-                        <div className="relative group">
-                            <button
-                                onClick={onLeaveRoom}
-                                className="flex items-center gap-2 text-gray-600 hover:text-black transition-colors"
-                            >
-                                <LogOut className="w-5 h-5" />
-                                <span className="hidden sm:inline">Leave</span>
-                            </button>
-                            {/* Leave Tooltip */}
-                            <div className="absolute bottom-full left-0 mb-2 px-2 py-1 bg-black text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none whitespace-nowrap z-20">
-                                Leave this room and return to home
-                                <div className="absolute top-full left-4 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-black"></div>
-                            </div>
-                        </div>
                     </div>
                 </div>
 

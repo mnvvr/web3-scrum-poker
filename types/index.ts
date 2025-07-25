@@ -61,7 +61,7 @@ export interface CardTypeConfig {
 export const CARD_TYPES: Record<CardType, CardTypeConfig> = {
     fibonacci: {
         name: 'Fibonacci',
-        values: [0, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, '?'],
+        values: [0, 1, 2, 3, 5, 8, 13, 20, 40, 100, '☕', '?'],
         description: 'Classic Fibonacci sequence for story point estimation',
         useCase: 'Most common. Reflects growing complexity with spaced values.',
         icon: '📊',

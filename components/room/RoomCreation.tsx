@@ -4,6 +4,8 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Plus, ArrowRight, ChevronDown, ChevronUp, Eye, EyeOff, Users, QrCode, Copy, Settings } from 'lucide-react'
 import { CardType, CARD_TYPES } from '@/types'
+import { LoadingButton } from '@/components/ui/LoadingButton'
+import { FormField, FormError } from '@/components/ui/FormError'
 
 interface RoomCreationProps {
     onCreateRoom: (roomName: string, cardType: CardType, settings: RoomSettings) => void
@@ -29,6 +31,13 @@ export function RoomCreation({ onCreateRoom, onJoinRoom, isCreating, userMode, d
     const [cardType, setCardType] = useState<CardType>('fibonacci')
     const [showCardTypes, setShowCardTypes] = useState(false)
     const [showAdvancedSettings, setShowAdvancedSettings] = useState(false)
+    
+    // Error states
+    const [errors, setErrors] = useState<{
+        roomName?: string
+        joinCode?: string
+        general?: string
+    }>({})
 
     // Room Settings
     const [revealMode, setRevealMode] = useState<'auto' | 'manual'>('auto')
@@ -37,9 +46,35 @@ export function RoomCreation({ onCreateRoom, onJoinRoom, isCreating, userMode, d
     const [autoGenerateLink, setAutoGenerateLink] = useState(true)
     const [showQRCode, setShowQRCode] = useState(true)
 
+    const validateRoomName = (name: string): string | undefined => {
+        if (!name.trim()) return 'Room name is required'
+        if (name.trim().length < 3) return 'Room name must be at least 3 characters'
+        if (name.trim().length > 50) return 'Room name must be less than 50 characters'
+        return undefined
+    }
+
+    const validateJoinCode = (code: string): string | undefined => {
+        if (!code.trim()) return 'Room code is required'
+        if (code.trim().length < 4) return 'Room code must be at least 4 characters'
+        if (!/^[A-Z0-9]+$/.test(code.trim())) return 'Room code can only contain letters and numbers'
+        return undefined
+    }
+
     const handleCreateRoom = (e: React.FormEvent) => {
         e.preventDefault()
-        if (roomName.trim()) {
+        
+        // Clear previous errors
+        setErrors({})
+        
+        // Validate form
+        const roomNameError = validateRoomName(roomName)
+        
+        if (roomNameError) {
+            setErrors({ roomName: roomNameError })
+            return
+        }
+
+        try {
             const settings: RoomSettings = {
                 revealMode,
                 initialTask: initialTaskTitle.trim() ? {
@@ -50,6 +85,26 @@ export function RoomCreation({ onCreateRoom, onJoinRoom, isCreating, userMode, d
                 showQRCode
             }
             onCreateRoom(roomName.trim(), cardType, settings)
+        } catch (error) {
+            setErrors({ general: 'Failed to create room. Please try again.' })
+        }
+    }
+
+    const handleJoinRoom = (code: string) => {
+        // Clear previous errors
+        setErrors({})
+        
+        const joinCodeError = validateJoinCode(code)
+        
+        if (joinCodeError) {
+            setErrors({ joinCode: joinCodeError })
+            return
+        }
+
+        try {
+            onJoinRoom(code.trim().toUpperCase())
+        } catch (error) {
+            setErrors({ joinCode: 'Failed to join room. Please check the code and try again.' })
         }
     }
 
@@ -70,33 +125,38 @@ export function RoomCreation({ onCreateRoom, onJoinRoom, isCreating, userMode, d
                 transition={{ delay: 0.1 }}
                 className="text-center relative z-10 mb-12"
             >
-                <div className="flex items-center justify-center gap-4 max-w-md mx-auto">
-                    <div className="flex-1">
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-md mx-auto">
+                    <div className="flex-1 w-full sm:w-auto">
                         <input
                             type="text"
                             value={joinCode}
                             onChange={(e) => setJoinCode(e.target.value.toUpperCase())}
                             placeholder="Enter room code"
-                            className="w-full px-4 py-3 border border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent font-distressed vintage-paper"
+                            className="w-full px-4 py-3 border border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent font-distressed vintage-paper focus-ring"
                             maxLength={9}
                         />
                     </div>
-                    <button
+                    <LoadingButton
                         onClick={(e) => {
                             e.preventDefault()
-                            if (joinCode.trim()) {
-                                onJoinRoom(joinCode.trim().toUpperCase())
-                            }
+                            handleJoinRoom(joinCode)
                         }}
-                        className="vintage-btn px-6 py-3 flex items-center gap-2 whitespace-nowrap"
+                        isLoading={false}
+                        className="px-6 py-3 whitespace-nowrap w-full sm:w-auto"
+                        disabled={!joinCode.trim()}
                     >
-                        Join Room
-                        <ArrowRight className="w-4 h-4" />
-                    </button>
+                        <span className="flex items-center gap-2">
+                            Join Room
+                            <ArrowRight className="w-4 h-4" />
+                        </span>
+                    </LoadingButton>
                 </div>
-                <p className="text-gray-600 text-xs mt-2 font-distressed">
-                    Enter a code to join your team's room
-                </p>
+                <div className="text-center">
+                    <p className="text-gray-600 text-xs mt-2 font-distressed">
+                        Enter a code to join your team's room
+                    </p>
+                    <FormError error={errors.joinCode} />
+                </div>
             </motion.div>
 
             {/* Create New Room - Redesigned as Poker Cards */}
@@ -133,37 +193,53 @@ export function RoomCreation({ onCreateRoom, onJoinRoom, isCreating, userMode, d
 
                     {/* Header with Fun Icon */}
                     <div className="text-center mb-8 relative z-10">
-                        <div className="inline-flex items-center justify-center w-16 h-16 bg-black rounded-full mb-4 transform hover:scale-110 transition-transform">
+                        <div className="inline-flex items-center justify-center w-16 h-16 bg-black rounded-full mb-4 transform hover:scale-110 transition-transform icon-treatment">
                             <Plus className="w-8 h-8 text-white" />
                         </div>
                         <h2 className="text-3xl font-bold text-black mb-2 font-brand transform -rotate-1">Let's Start Planning!</h2>
                         <p className="text-gray-600 font-distressed transform rotate-1">Create your planning session and get the team together</p>
                     </div>
 
-                    <form onSubmit={handleCreateRoom} className="space-y-8 relative z-10">
+                    <form onSubmit={handleCreateRoom} className="space-y-8 relative z-10 enhanced-form-spacing">
+                        {/* General Error Display */}
+                        {errors.general && (
+                            <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                                <FormError error={errors.general} className="mt-0" />
+                            </div>
+                        )}
                         {/* Room Name - Fun Input */}
-                        <div className="group">
-                            <label className="block text-black mb-3 text-lg font-medium group-hover:text-black transition-colors font-brand">
-                                What should we call this session?
-                            </label>
+                        <FormField
+                            label="What should we call this session?"
+                            error={errors.roomName}
+                            required
+                            className="form-field-enhanced"
+                        >
                             <input
                                 type="text"
                                 value={roomName}
-                                onChange={(e) => setRoomName(e.target.value)}
+                                onChange={(e) => {
+                                    setRoomName(e.target.value)
+                                    // Clear error on change
+                                    if (errors.roomName) {
+                                        setErrors(prev => ({ ...prev, roomName: undefined }))
+                                    }
+                                }}
                                 placeholder="Sprint 17 – Backend Refactor Tasks"
-                                className="w-full px-6 py-4 border border-black rounded-2xl focus:outline-none focus:ring-4 focus:ring-gray-200 focus:border-black text-lg transition-all duration-300 hover:border-black font-distressed vintage-paper"
+                                className={`w-full px-4 sm:px-6 py-3 sm:py-4 border rounded-2xl focus:outline-none focus:ring-4 focus:ring-gray-200 focus:border-black text-base sm:text-lg transition-all duration-300 hover:border-black font-distressed vintage-paper focus-ring ${
+                                    errors.roomName ? 'border-red-500' : 'border-black'
+                                }`}
                                 maxLength={50}
                             />
                             <p className="text-gray-500 text-sm mt-2 ml-2 font-distressed">
                                 Useful for identifying ongoing planning sessions
                             </p>
-                        </div>
+                        </FormField>
 
                         {/* Card Type Selection - Dropdown Style */}
-                        <div className="group">
-                            <label className="block text-black mb-3 text-lg font-medium group-hover:text-black transition-colors font-brand">
-                                Choose your planning style
-                            </label>
+                        <FormField
+                            label="Choose your planning style"
+                            className="form-field-enhanced"
+                        >
 
                             {/* Selected Card Type Display */}
                             <div className="mb-4">
@@ -292,7 +368,7 @@ export function RoomCreation({ onCreateRoom, onJoinRoom, isCreating, userMode, d
                                     : 'Click to see all available planning styles'
                                 }
                             </p>
-                        </div>
+                        </FormField>
 
                         {/* Advanced Settings Toggle */}
                         <div className="text-center">
@@ -336,7 +412,7 @@ export function RoomCreation({ onCreateRoom, onJoinRoom, isCreating, userMode, d
                                                     }`}
                                             >
                                                 <div className="flex items-center gap-3 mb-2">
-                                                    <div className="w-10 h-10 bg-black rounded-lg flex items-center justify-center">
+                                                    <div className="w-10 h-10 bg-black rounded-lg flex items-center justify-center icon-treatment">
                                                         <Eye className="w-5 h-5 text-white" />
                                                     </div>
                                                     <div>
@@ -358,7 +434,7 @@ export function RoomCreation({ onCreateRoom, onJoinRoom, isCreating, userMode, d
                                                     }`}
                                             >
                                                 <div className="flex items-center gap-3 mb-2">
-                                                    <div className="w-10 h-10 bg-black rounded-lg flex items-center justify-center">
+                                                    <div className="w-10 h-10 bg-black rounded-lg flex items-center justify-center icon-treatment">
                                                         <EyeOff className="w-5 h-5 text-white" />
                                                     </div>
                                                     <div>
@@ -443,17 +519,19 @@ export function RoomCreation({ onCreateRoom, onJoinRoom, isCreating, userMode, d
 
                         {/* Create Button - Fun Style */}
                         <div className="text-center pt-4">
-                            <button
+                            <LoadingButton
                                 type="submit"
-                                className="group relative inline-flex items-center justify-center px-8 py-4 bg-black text-white font-bold text-lg rounded-2xl shadow-lg transform hover:scale-105 hover:shadow-xl transition-all duration-300 overflow-hidden vintage-btn"
+                                isLoading={isCreating}
+                                loadingText="Creating Room..."
+                                className="group px-8 py-4 text-lg rounded-2xl shadow-lg transform hover:scale-105 hover:shadow-xl transition-all duration-300"
+                                disabled={!roomName.trim()}
                             >
-                                <span className="relative z-10 flex items-center gap-3">
+                                <span className="flex items-center gap-3">
                                     <span className="text-2xl">🚀</span>
                                     Create Planning Room
                                     <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                                 </span>
-                                <div className="absolute inset-0 bg-gray-800 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                            </button>
+                            </LoadingButton>
                             <p className="text-gray-500 text-sm mt-3 font-distressed">
                                 ✨ Your team will love this planning experience!
                             </p>

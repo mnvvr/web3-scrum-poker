@@ -5,6 +5,7 @@ import { Room as RoomType, User, Story, CardType, CARD_TYPES } from '@/types'
 import { RoomHeader } from './RoomHeader'
 import { CurrentStory } from './CurrentStory'
 import { ScrumCardsSection } from './ScrumCardsSection'
+import { LogOut } from 'lucide-react'
 import toast from 'react-hot-toast'
 
 interface RoomProps {
@@ -93,52 +94,6 @@ export function Room({ room, currentUser, onLeaveRoom, onEndSession }: RoomProps
                 {/* Current Story */}
                 <CurrentStory story={currentStory} />
 
-                {/* Card Type Info */}
-                <div className="mb-8">
-                    <div className="bg-white border border-black rounded-lg p-4 shadow-sm relative overflow-hidden vintage-paper">
-                        {/* Distressed background pattern */}
-                        <div className="absolute inset-0 bg-gradient-to-br from-gray-50 to-white opacity-30"></div>
-                        <div className="absolute top-2 right-2 w-6 h-6 text-black/10 font-bold text-sm transform rotate-12">🎴</div>
-
-                        <div className="relative z-10">
-                            <div className="flex items-center justify-between mb-3">
-                                <div className="flex items-center gap-3">
-                                    <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${CARD_TYPES[room.cardType].color} flex items-center justify-center text-white text-lg`}>
-                                        {CARD_TYPES[room.cardType].icon}
-                                    </div>
-                                    <div>
-                                        <h4 className="text-lg font-bold text-black font-brand">Card Type</h4>
-                                        <p className="text-sm text-gray-600 font-distressed">{CARD_TYPES[room.cardType].name}</p>
-                                    </div>
-                                </div>
-                                <span className="text-sm font-medium text-gray-600 font-distressed">
-                                    {CARD_TYPES[room.cardType].description}
-                                </span>
-                            </div>
-
-                            <p className="text-gray-700 text-sm font-distressed mb-3 italic">
-                                {CARD_TYPES[room.cardType].useCase}
-                            </p>
-
-                            <div className="flex flex-wrap gap-2">
-                                {CARD_TYPES[room.cardType].values.slice(0, 8).map((value, index) => (
-                                    <div
-                                        key={value}
-                                        className={`w-8 h-10 rounded-lg flex items-center justify-center text-white text-xs font-bold border border-black/20 bg-gradient-to-br ${CARD_TYPES[room.cardType].color} transform hover:rotate-2 transition-transform`}
-                                    >
-                                        {value}
-                                    </div>
-                                ))}
-                                {CARD_TYPES[room.cardType].values.length > 8 && (
-                                    <div className="w-8 h-10 bg-gray-300 rounded-lg flex items-center justify-center text-gray-600 text-xs font-bold border border-gray-400">
-                                        +{CARD_TYPES[room.cardType].values.length - 8}
-                                    </div>
-                                )}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 {/* Scrum Cards Section */}
                 <ScrumCardsSection
                     cardType={room.cardType}
@@ -151,6 +106,17 @@ export function Room({ room, currentUser, onLeaveRoom, onEndSession }: RoomProps
                     totalCount={room.participants.length}
                     participants={room.participants}
                 />
+            </div>
+
+            {/* Leave Button - Bottom Right */}
+            <div className="fixed bottom-6 right-6 z-[9999]">
+                <button
+                    onClick={onLeaveRoom}
+                    className="flex items-center gap-2 bg-white text-black font-semibold py-3 px-4 rounded-lg border-2 border-black hover:bg-gray-50 transition-all duration-300 shadow-lg vintage-btn"
+                >
+                    <LogOut className="w-5 h-5" />
+                    <span>Leave Room</span>
+                </button>
             </div>
         </div>
     )

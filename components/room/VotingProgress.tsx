@@ -15,9 +15,9 @@ export function VotingProgress({ votedCount, totalCount }: VotingProgressProps) 
         <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="inline-flex items-center gap-4 bg-gray-50 border border-black rounded-full px-6 py-3 mb-6 relative overflow-hidden vintage-paper"
+            className="inline-flex items-center gap-4 bg-gray-50 border border-gray-300 rounded-full px-6 py-3 mb-6 relative overflow-hidden vintage-paper"
             style={{
-                boxShadow: '4px 4px 0 rgba(0, 0, 0, 0.1)',
+                boxShadow: '2px 2px 0 rgba(0, 0, 0, 0.05)',
                 transform: 'rotate(var(--rotation, 1deg))'
             }}
         >

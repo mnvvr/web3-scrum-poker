@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import Image from 'next/image'
 import { CARD_TYPES, CardType, User } from '@/types'
 
 interface ScrumCardsProps {
@@ -27,6 +28,22 @@ export function ScrumCards({ cardType, selectedValue, onSelectCard, isRevealed, 
             .filter(vote => vote.value === value)
             .map(vote => participants.find(p => p.id === vote.userId))
             .filter(Boolean) as User[]
+    }
+
+    const getCardImage = (value: number | string) => {
+        if (value === 0) return '/cards/card00.png'
+        if (value === 1) return '/cards/card01.png'
+        if (value === 2) return '/cards/card02.png'
+        if (value === 3) return '/cards/card03.png'
+        if (value === 5) return '/cards/card05.png'
+        if (value === 8) return '/cards/card08.png'
+        if (value === 13) return '/cards/card13.png'
+        if (value === 20) return '/cards/card20.png'
+        if (value === 40) return '/cards/card40.png'
+        if (value === 100) return '/cards/card100.png'
+        if (value === '☕') return '/cards/cardbreak.png'
+        if (value === '?') return '/cards/cardquestion.png'
+        return null
     }
 
     const getCardColor = (value: number | string) => {
@@ -307,7 +324,7 @@ export function ScrumCards({ cardType, selectedValue, onSelectCard, isRevealed, 
                 </motion.div>
             )}
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 max-w-7xl mx-auto">
                 <AnimatePresence>
                     {!isRevealed && cardValues.map((value, index) => {
                         const isSelected = selectedValue === value
@@ -330,45 +347,57 @@ export function ScrumCards({ cardType, selectedValue, onSelectCard, isRevealed, 
                                     onMouseEnter={() => setHoveredCard(value)}
                                     onMouseLeave={() => setHoveredCard(null)}
                                     className={`
-                    w-full aspect-[3/4] rounded-xl border font-bold text-white transition-all duration-300
-                    relative overflow-hidden
+                    w-full aspect-[3/4] rounded-xl border-2 transition-all duration-300
+                    relative overflow-hidden shadow-xl
                     ${isSelected
-                                            ? 'border-black shadow-lg shadow-black/20 scale-105 ring-4 ring-green-200'
-                                            : 'border-black/20 hover:border-black/40'
+                                            ? 'border-black shadow-2xl shadow-black/40 scale-105 ring-4 ring-green-200'
+                                            : 'border-black/30 hover:border-black/60 hover:shadow-2xl hover:shadow-black/30'
                                         }
                     ${isRevealed ? 'cursor-default' : 'cursor-pointer hover:scale-105'}
-                    bg-gradient-to-br ${getCardColor(value)}
                     ${isVoted && isRevealed ? 'ring-2 ring-yellow-400 ring-offset-2 ring-offset-white' : ''}
                     
-                    /* CHANI Style - Distressed effect */
-                    before:content-[''] before:absolute before:inset-0 before:bg-gradient-to-br before:from-white/10 before:to-transparent before:opacity-0 hover:before:opacity-100 before:transition-opacity
+                    /* Background - use image if available, otherwise gradient */
+                    ${getCardImage(value) ? 'bg-white' : `bg-gradient-to-br ${getCardColor(value)}`}
                   `}
                                 >
-                                    {/* Hand-drawn corner decoration */}
-                                    <div className="absolute top-2 left-2 w-6 h-6 text-white/20 font-bold text-sm transform -rotate-12">
-                                        ♠
-                                    </div>
-                                    <div className="absolute bottom-2 right-2 w-6 h-6 text-white/20 font-bold text-sm transform rotate-12">
-                                        ♥
-                                    </div>
+                                    {getCardImage(value) ? (
+                                        <Image
+                                            src={getCardImage(value)!}
+                                            alt={`Card ${value}`}
+                                            fill
+                                            className="object-contain rounded-xl"
+                                            unoptimized
+                                        />
+                                    ) : (
+                                        <>
+                                            {/* Hand-drawn corner decoration */}
+                                            <div className="absolute top-2 left-2 w-5 h-5 text-white/20 font-bold text-sm transform -rotate-12">
+                                                ♠
+                                            </div>
+                                            <div className="absolute bottom-2 right-2 w-5 h-5 text-white/20 font-bold text-sm transform rotate-12">
+                                                ♥
+                                            </div>
 
-                                    <div className="flex flex-col items-center justify-center h-full p-2 relative z-10">
-                                        <span className="text-2xl md:text-3xl font-bold font-distressed">
-                                            {value}
-                                        </span>
-                                        {isRevealed && isVoted && (
-                                            <motion.div
-                                                initial={{ scale: 0 }}
-                                                animate={{ scale: 1 }}
-                                                className="absolute -top-2 -right-2 w-6 h-6 bg-yellow-400 rounded-full flex items-center justify-center border border-black"
-                                            >
-                                                <span className="text-xs font-bold text-black">{voteCount}</span>
-                                            </motion.div>
-                                        )}
-                                    </div>
+                                            <div className="flex flex-col items-center justify-center h-full p-2 relative z-10">
+                                                <span className="text-2xl md:text-3xl font-bold font-distressed text-white">
+                                                    {value}
+                                                </span>
+                                            </div>
 
-                                    {/* Distressed overlay */}
-                                    <div className="absolute inset-0 bg-gradient-to-br from-black/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                            {/* Distressed overlay */}
+                                            <div className="absolute inset-0 bg-gradient-to-br from-black/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                        </>
+                                    )}
+
+                                    {isRevealed && isVoted && (
+                                        <motion.div
+                                            initial={{ scale: 0 }}
+                                            animate={{ scale: 1 }}
+                                            className="absolute -top-2 -right-2 w-7 h-7 bg-yellow-400 rounded-full flex items-center justify-center border-2 border-black shadow-lg"
+                                        >
+                                            <span className="text-sm font-bold text-black">{voteCount}</span>
+                                        </motion.div>
+                                    )}
                                 </button>
 
                                 {/* Hover tooltip - CHANI style */}
@@ -378,9 +407,9 @@ export function ScrumCards({ cardType, selectedValue, onSelectCard, isRevealed, 
                                             initial={{ opacity: 0, y: 10 }}
                                             animate={{ opacity: 1, y: 0 }}
                                             exit={{ opacity: 0, y: 10 }}
-                                            className="absolute -bottom-12 left-1/2 transform -translate-x-1/2 z-10"
+                                            className="absolute -bottom-12 left-1/2 transform -translate-x-1/2 z-[9999]"
                                         >
-                                            <div className="bg-black text-white text-xs px-3 py-2 rounded-lg whitespace-nowrap border border-white/20 font-medium">
+                                            <div className="bg-black text-white text-xs px-3 py-2 rounded-lg whitespace-nowrap border border-white/20 font-medium shadow-lg">
                                                 Click to select this card
                                                 <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-black"></div>
                                             </div>
