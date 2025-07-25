@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Users, Hash, Copy, Check, Settings, LogOut } from 'lucide-react'
+import { Users, Hash, Copy, Check, Settings, LogOut, ChevronDown } from 'lucide-react'
 import { Room, User, CARD_TYPES } from '@/types'
 import { AnimatePresence } from 'framer-motion'
 
@@ -32,7 +32,7 @@ export function RoomHeader({
     const [showParticipants, setShowParticipants] = useState(false)
     const [copied, setCopied] = useState(false)
     const [showTooltip, setShowTooltip] = useState<string | null>(null)
-    const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 })
+    const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0, arrowUp: true })
 
     const copyRoomCode = () => {
         navigator.clipboard.writeText(room.code)
@@ -62,10 +62,30 @@ export function RoomHeader({
 
     const handleMouseEnter = (e: React.MouseEvent, tooltipType: string) => {
         const rect = e.currentTarget.getBoundingClientRect()
-        setTooltipPosition({
-            x: rect.left + rect.width / 2,
-            y: rect.bottom + 10
-        })
+        const viewportWidth = window.innerWidth
+        const viewportHeight = window.innerHeight
+
+        // Calculate initial position
+        let x = rect.left + rect.width / 2
+        let y = rect.bottom + 10
+
+        // Ensure tooltip doesn't go off-screen horizontally
+        const tooltipWidth = 300 // Approximate tooltip width
+        if (x + tooltipWidth / 2 > viewportWidth) {
+            x = viewportWidth - tooltipWidth / 2 - 10
+        } else if (x - tooltipWidth / 2 < 0) {
+            x = tooltipWidth / 2 + 10
+        }
+
+        // Ensure tooltip doesn't go off-screen vertically
+        const tooltipHeight = 60 // Approximate tooltip height
+        let arrowUp = true
+        if (y + tooltipHeight > viewportHeight) {
+            y = rect.top - tooltipHeight - 10
+            arrowUp = false
+        }
+
+        setTooltipPosition({ x, y, arrowUp })
         setShowTooltip(tooltipType)
     }
 
@@ -119,7 +139,7 @@ export function RoomHeader({
                                 <span className="text-sm font-medium text-black font-brand">
                                     {room.participants.length} people
                                 </span>
-                                <Users className="w-4 h-4" />
+                                <ChevronDown className="w-4 h-4" />
                             </button>
                         </div>
                     </div>
@@ -294,7 +314,13 @@ export function RoomHeader({
                         {showTooltip === 'reveal' && (isEditingStory ? "Please finish editing the task first" : "Show all team votes and calculate the final estimate")}
                         {showTooltip === 'new' && (isEditingStory ? "Please finish editing the task first" : "Start a new voting round")}
                         {showTooltip === 'end' && (isEditingStory ? "Please finish editing the task first" : "End the current session")}
-                        <div className="absolute left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 bottom-full border-b-4 border-transparent border-b-black"></div>
+                        {/* Dynamic arrow direction */}
+                        <div
+                            className={`absolute left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-transparent ${tooltipPosition.arrowUp
+                                    ? 'bottom-full border-b-4 border-b-black'
+                                    : 'top-full border-t-4 border-t-black'
+                                }`}
+                        ></div>
                     </div>
                 </div>
             )}
