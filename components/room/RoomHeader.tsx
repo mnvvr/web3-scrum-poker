@@ -81,12 +81,13 @@ export function RoomHeader({
             x = tooltipWidth / 2 + 10
         }
 
-        // Ensure tooltip doesn't go off-screen vertically
+        // For team tooltip, always show below and point up
         const tooltipHeight = 60 // Approximate tooltip height
         let arrowUp = true
+
+        // If tooltip would go off bottom of screen, adjust position
         if (y + tooltipHeight > viewportHeight) {
-            y = rect.top - tooltipHeight - 10
-            arrowUp = false
+            y = viewportHeight - tooltipHeight - 20 // Keep some margin from bottom
         }
 
         setTooltipPosition({ x, y, arrowUp })
