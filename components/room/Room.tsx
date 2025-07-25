@@ -26,12 +26,27 @@ export function Room({ room, currentUser, onLeaveRoom, onEndSession, onUpdateSto
 
     useEffect(() => {
         if (room.stories.length > 0) {
-            setCurrentStory(room.stories[room.currentStoryIndex])
-            setIsVoting(!room.stories[room.currentStoryIndex].isRevealed)
-            setIsRevealed(room.stories[room.currentStoryIndex].isRevealed)
+            // Test verisi: 5 kişinin oy verdiği örnek
+            const testVotes = [
+                { userId: room.participants[0]?.id || 'user1', value: 8, timestamp: new Date() },
+                { userId: room.participants[1]?.id || 'user2', value: 13, timestamp: new Date() },
+                { userId: room.participants[2]?.id || 'user3', value: 8, timestamp: new Date() },
+                { userId: room.participants[3]?.id || 'user4', value: 5, timestamp: new Date() },
+                { userId: room.participants[4]?.id || 'user5', value: 13, timestamp: new Date() },
+            ]
+
+            const storyWithTestVotes = {
+                ...room.stories[room.currentStoryIndex],
+                votes: testVotes,
+                isRevealed: true // Test için revealed durumunda
+            }
+
+            setCurrentStory(storyWithTestVotes)
+            setIsVoting(!storyWithTestVotes.isRevealed)
+            setIsRevealed(storyWithTestVotes.isRevealed)
 
             // Check if user has already voted
-            const userVote = room.stories[room.currentStoryIndex].votes.find(
+            const userVote = storyWithTestVotes.votes.find(
                 v => v.userId === currentUser.id
             )
             setSelectedValue(userVote?.value || null)
