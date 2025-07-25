@@ -17,6 +17,21 @@ export function CurrentStory({ story, onUpdateStory, onEditStateChange }: Curren
     const [editTitle, setEditTitle] = useState(story.title)
     const [editDescription, setEditDescription] = useState(story.description || '')
     const [editReference, setEditReference] = useState(story.reference || '')
+    const [showTooltip, setShowTooltip] = useState<string | null>(null)
+    const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 })
+
+    const handleMouseEnter = (e: React.MouseEvent, tooltipType: string) => {
+        const rect = e.currentTarget.getBoundingClientRect()
+        setTooltipPosition({
+            x: rect.left + rect.width / 2,
+            y: rect.bottom + 10
+        })
+        setShowTooltip(tooltipType)
+    }
+
+    const handleMouseLeave = () => {
+        setShowTooltip(null)
+    }
 
     const maxLength = 100 // Reduced to make truncation more likely
     const shouldTruncate = story.description && story.description.length > maxLength
@@ -73,8 +88,9 @@ export function CurrentStory({ story, onUpdateStory, onEditStateChange }: Curren
                             setIsEditing(true)
                             onEditStateChange?.(true)
                         }}
+                        onMouseEnter={(e) => handleMouseEnter(e, 'edit')}
+                        onMouseLeave={handleMouseLeave}
                         className="absolute top-0 right-0 p-2 text-gray-400 hover:text-black transition-colors bg-white rounded-lg border border-gray-200 hover:border-gray-300 shadow-sm hover:shadow-md"
-                        title="Edit task title, description, and reference link"
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                     >
@@ -134,20 +150,22 @@ export function CurrentStory({ story, onUpdateStory, onEditStateChange }: Curren
                                 <motion.button
                                     onClick={handleSave}
                                     disabled={!!editReference && !isValidUrl(editReference)}
+                                    onMouseEnter={(e) => handleMouseEnter(e, 'save')}
+                                    onMouseLeave={handleMouseLeave}
                                     className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 py-2 rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed font-brand shadow-md hover:shadow-lg"
                                     whileHover={{ scale: 1.02 }}
                                     whileTap={{ scale: 0.98 }}
-                                    title={!!editReference && !isValidUrl(editReference) ? "Please enter a valid URL first" : "Save your changes to the task"}
                                 >
                                     <Save size={16} />
                                     Save Changes
                                 </motion.button>
                                 <motion.button
                                     onClick={handleCancel}
+                                    onMouseEnter={(e) => handleMouseEnter(e, 'cancel')}
+                                    onMouseLeave={handleMouseLeave}
                                     className="flex items-center gap-2 bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition-all duration-300 font-brand shadow-md hover:shadow-lg"
                                     whileHover={{ scale: 1.02 }}
                                     whileTap={{ scale: 0.98 }}
-                                    title="Discard changes and return to view mode"
                                 >
                                     <X size={16} />
                                     Cancel
@@ -189,10 +207,11 @@ export function CurrentStory({ story, onUpdateStory, onEditStateChange }: Curren
                                     {shouldTruncate && (
                                         <motion.button
                                             onClick={() => setIsExpanded(!isExpanded)}
+                                            onMouseEnter={(e) => handleMouseEnter(e, 'expand')}
+                                            onMouseLeave={handleMouseLeave}
                                             className="text-blue-600 hover:text-blue-800 font-medium text-sm underline transition-colors font-distressed"
                                             whileHover={{ scale: 1.05 }}
                                             whileTap={{ scale: 0.95 }}
-                                            title={isExpanded ? "Show less of the description" : "Show full description"}
                                         >
                                             {isExpanded ? 'Show Less' : 'Show More'}
                                         </motion.button>
@@ -203,6 +222,26 @@ export function CurrentStory({ story, onUpdateStory, onEditStateChange }: Curren
                     )}
                 </div>
             </div>
+
+            {/* Custom Tooltip */}
+            {showTooltip && (
+                <div
+                    className="fixed pointer-events-none z-[2147483647]"
+                    style={{
+                        left: tooltipPosition.x,
+                        top: tooltipPosition.y,
+                        transform: 'translateX(-50%)'
+                    }}
+                >
+                    <div className="bg-black text-white text-xs px-3 py-2 rounded-lg whitespace-nowrap border border-white/20 font-medium shadow-xl backdrop-blur-sm">
+                        {showTooltip === 'edit' && "Edit task title, description, and reference link"}
+                        {showTooltip === 'save' && (!!editReference && !isValidUrl(editReference) ? "Please enter a valid URL first" : "Save your changes to the task")}
+                        {showTooltip === 'cancel' && "Discard changes and return to view mode"}
+                        {showTooltip === 'expand' && (isExpanded ? "Show less of the description" : "Show full description")}
+                        <div className="absolute left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 top-full border-t-4 border-transparent border-t-black"></div>
+                    </div>
+                </div>
+            )}
         </motion.div>
     )
 } 
