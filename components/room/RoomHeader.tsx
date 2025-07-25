@@ -209,7 +209,9 @@ export function RoomHeader({
                                             transition={{ duration: 0.3 }}
                                             className={`p-3 border rounded-lg transition-all duration-300 hover:shadow-md transform hover:scale-105 ${hasVoted && isVoting
                                                 ? 'bg-gradient-to-br from-green-50 to-emerald-50 border-green-200'
-                                                : 'bg-white border-gray-200 hover:border-gray-300'
+                                                : hasVoted && isRevealed
+                                                    ? 'bg-gradient-to-br from-yellow-50 to-orange-50 border-yellow-200'
+                                                    : 'bg-white border-gray-200 hover:border-gray-300'
                                                 }`}
                                         >
                                             <div className="flex items-center justify-between mb-2">
@@ -217,13 +219,13 @@ export function RoomHeader({
                                                     {participant.name}
                                                 </span>
                                                 <div className="flex items-center gap-1">
-                                                    {hasVoted && isVoting && (
+                                                    {hasVoted && (isVoting || isRevealed) && (
                                                         <motion.div
                                                             initial={{ scale: 0 }}
                                                             animate={{ scale: 1 }}
                                                             transition={{ type: "spring", stiffness: 500 }}
                                                         >
-                                                            <Check className="w-3 h-3 text-green-600" />
+                                                            <Check className={`w-3 h-3 ${isRevealed ? 'text-yellow-600' : 'text-green-600'}`} />
                                                         </motion.div>
                                                     )}
                                                     <span className={`text-xs px-2 py-1 rounded-full ${getParticipantTypeClass(participant)}`}>
@@ -237,21 +239,28 @@ export function RoomHeader({
                                                 {hasVoted ? (
                                                     <div className="flex items-center gap-2">
                                                         <motion.div
-                                                            className="w-6 h-5 bg-gradient-to-r from-black to-gray-800 rounded flex items-center justify-center text-white text-xs font-bold shadow-sm"
+                                                            className={`w-6 h-5 rounded flex items-center justify-center text-white text-xs font-bold shadow-sm ${isRevealed
+                                                                ? 'bg-gradient-to-r from-yellow-500 to-orange-500'
+                                                                : 'bg-gradient-to-r from-black to-gray-800'
+                                                                }`}
                                                             initial={{ scale: 0 }}
                                                             animate={{ scale: 1 }}
                                                             transition={{ type: "spring", stiffness: 500, delay: 0.1 }}
                                                         >
                                                             {vote?.value}
                                                         </motion.div>
-                                                        <span className="text-xs text-gray-600 font-distressed">points</span>
+                                                        <span className="text-xs text-gray-600 font-distressed">
+                                                            {isRevealed ? 'revealed' : 'points'}
+                                                        </span>
                                                     </div>
                                                 ) : (
                                                     <div className="flex items-center gap-2">
                                                         <div className="w-6 h-5 bg-gray-300 rounded flex items-center justify-center text-gray-500 text-xs font-bold">
                                                             —
                                                         </div>
-                                                        <span className="text-xs text-gray-500 font-distressed">no vote</span>
+                                                        <span className="text-xs text-gray-500 font-distressed">
+                                                            {isRevealed ? 'no vote' : 'no vote'}
+                                                        </span>
                                                     </div>
                                                 )}
                                             </div>
