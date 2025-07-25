@@ -74,6 +74,38 @@ export function ScrumCards({ cardType, selectedValue, onSelectCard, isRevealed, 
         return 'from-blue-400 to-blue-600'
     }
 
+    const getTooltipContent = (statType: string) => {
+        switch (statType) {
+            case 'total':
+                return {
+                    title: 'Total Votes',
+                    description: `All ${votes.length} participants have cast their votes in this round.`
+                }
+            case 'unique':
+                return {
+                    title: 'Unique Values',
+                    description: `${new Set(votes.map(v => v.value)).size} different vote values were chosen, showing the variety of team estimates.`
+                }
+            case 'highest':
+                const highestValue = Math.max(...votes.map(v => typeof v.value === 'number' ? v.value : 0))
+                return {
+                    title: 'Highest Vote',
+                    description: `The highest estimate was ${highestValue}, indicating the most complex or uncertain perspective.`
+                }
+            case 'lowest':
+                const lowestValue = Math.min(...votes.map(v => typeof v.value === 'number' ? v.value : Infinity))
+                return {
+                    title: 'Lowest Vote',
+                    description: `The lowest estimate was ${lowestValue}, suggesting the most optimistic or simple view.`
+                }
+            default:
+                return {
+                    title: 'Vote Statistic',
+                    description: 'Information about this voting metric.'
+                }
+        }
+    }
+
     return (
         <>
             <div className="w-full max-w-6xl mx-auto">
@@ -101,6 +133,28 @@ export function ScrumCards({ cardType, selectedValue, onSelectCard, isRevealed, 
                                 >
                                     <div className="text-2xl font-bold text-black font-brand mb-1">{votes.length}</div>
                                     <div className="text-xs text-gray-600 font-distressed">Total Votes</div>
+
+                                    {/* Tooltip for Total Votes */}
+                                    {hoveredStat === 'total' && (
+                                        <motion.div
+                                            initial={{ opacity: 0, y: 10 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            exit={{ opacity: 0, y: 10 }}
+                                            className="absolute z-50 bg-black text-white p-3 rounded-lg shadow-lg max-w-xs border border-white/20"
+                                            style={{
+                                                left: '50%',
+                                                top: '-80px',
+                                                transform: 'translateX(-50%)'
+                                            }}
+                                        >
+                                            <div>
+                                                <div className="font-bold text-sm mb-1 font-brand">{getTooltipContent('total').title}</div>
+                                                <div className="text-xs text-gray-300 font-distressed leading-relaxed">{getTooltipContent('total').description}</div>
+                                            </div>
+                                            {/* Arrow pointing down */}
+                                            <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-black"></div>
+                                        </motion.div>
+                                    )}
                                 </div>
 
                                 <div
@@ -112,6 +166,28 @@ export function ScrumCards({ cardType, selectedValue, onSelectCard, isRevealed, 
                                         {new Set(votes.map(v => v.value)).size}
                                     </div>
                                     <div className="text-xs text-gray-600 font-distressed">Unique Values</div>
+
+                                    {/* Tooltip for Unique Values */}
+                                    {hoveredStat === 'unique' && (
+                                        <motion.div
+                                            initial={{ opacity: 0, y: 10 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            exit={{ opacity: 0, y: 10 }}
+                                            className="absolute z-50 bg-black text-white p-3 rounded-lg shadow-lg max-w-xs border border-white/20"
+                                            style={{
+                                                left: '50%',
+                                                top: '-80px',
+                                                transform: 'translateX(-50%)'
+                                            }}
+                                        >
+                                            <div>
+                                                <div className="font-bold text-sm mb-1 font-brand">{getTooltipContent('unique').title}</div>
+                                                <div className="text-xs text-gray-300 font-distressed leading-relaxed">{getTooltipContent('unique').description}</div>
+                                            </div>
+                                            {/* Arrow pointing down */}
+                                            <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-black"></div>
+                                        </motion.div>
+                                    )}
                                 </div>
 
                                 <div
@@ -123,6 +199,28 @@ export function ScrumCards({ cardType, selectedValue, onSelectCard, isRevealed, 
                                         {Math.max(...votes.map(v => typeof v.value === 'number' ? v.value : 0))}
                                     </div>
                                     <div className="text-xs text-gray-600 font-distressed">Highest Vote</div>
+
+                                    {/* Tooltip for Highest Vote */}
+                                    {hoveredStat === 'highest' && (
+                                        <motion.div
+                                            initial={{ opacity: 0, y: 10 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            exit={{ opacity: 0, y: 10 }}
+                                            className="absolute z-50 bg-black text-white p-3 rounded-lg shadow-lg max-w-xs border border-white/20"
+                                            style={{
+                                                left: '50%',
+                                                top: '-80px',
+                                                transform: 'translateX(-50%)'
+                                            }}
+                                        >
+                                            <div>
+                                                <div className="font-bold text-sm mb-1 font-brand">{getTooltipContent('highest').title}</div>
+                                                <div className="text-xs text-gray-300 font-distressed leading-relaxed">{getTooltipContent('highest').description}</div>
+                                            </div>
+                                            {/* Arrow pointing down */}
+                                            <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-black"></div>
+                                        </motion.div>
+                                    )}
                                 </div>
 
                                 <div
@@ -134,6 +232,28 @@ export function ScrumCards({ cardType, selectedValue, onSelectCard, isRevealed, 
                                         {Math.min(...votes.map(v => typeof v.value === 'number' ? v.value : Infinity))}
                                     </div>
                                     <div className="text-xs text-gray-600 font-distressed">Lowest Vote</div>
+
+                                    {/* Tooltip for Lowest Vote */}
+                                    {hoveredStat === 'lowest' && (
+                                        <motion.div
+                                            initial={{ opacity: 0, y: 10 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            exit={{ opacity: 0, y: 10 }}
+                                            className="absolute z-50 bg-black text-white p-3 rounded-lg shadow-lg max-w-xs border border-white/20"
+                                            style={{
+                                                left: '50%',
+                                                top: '-80px',
+                                                transform: 'translateX(-50%)'
+                                            }}
+                                        >
+                                            <div>
+                                                <div className="font-bold text-sm mb-1 font-brand">{getTooltipContent('lowest').title}</div>
+                                                <div className="text-xs text-gray-300 font-distressed leading-relaxed">{getTooltipContent('lowest').description}</div>
+                                            </div>
+                                            {/* Arrow pointing down */}
+                                            <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-black"></div>
+                                        </motion.div>
+                                    )}
                                 </div>
                             </div>
 

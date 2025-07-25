@@ -95,10 +95,13 @@ export function RoomHeader({
                 y = viewportHeight - tooltipHeight - 20
             }
         } else {
-            // For other tooltips, use dynamic positioning
+            // For other tooltips, always show below
+            y = rect.bottom + 10
+            arrowUp = true
+
+            // If it would go off bottom, move it up but keep arrow pointing up
             if (y + tooltipHeight > viewportHeight) {
-                y = rect.top - tooltipHeight - 10
-                arrowUp = false
+                y = viewportHeight - tooltipHeight - 20
             }
         }
 
@@ -128,8 +131,9 @@ export function RoomHeader({
                                     <span className="font-mono font-bold text-black">{room.code}</span>
                                     <button
                                         onClick={copyRoomCode}
+                                        onMouseEnter={(e) => handleMouseEnter(e, 'copy')}
+                                        onMouseLeave={handleMouseLeave}
                                         className="text-gray-400 hover:text-black transition-colors hover:scale-110 transform duration-200"
-                                        title={copied ? "Room code copied!" : "Copy room code to clipboard"}
                                     >
                                         {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
                                     </button>
@@ -330,17 +334,13 @@ export function RoomHeader({
                     }}
                 >
                     <div className="bg-black text-white text-xs px-3 py-2 rounded-lg whitespace-nowrap border border-white/20 font-medium shadow-xl backdrop-blur-sm">
+                        {showTooltip === 'copy' && (copied ? "Room code copied!" : "Copy room code to clipboard")}
                         {showTooltip === 'team' && (showParticipants ? "Hide participants list" : "View participants and their votes")}
                         {showTooltip === 'reveal' && (isEditingStory ? "Please finish editing the task first" : "Show all team votes and calculate the final estimate")}
                         {showTooltip === 'new' && (isEditingStory ? "Please finish editing the task first" : "Start a new voting round")}
                         {showTooltip === 'end' && (isEditingStory ? "Please finish editing the task first" : "End the current session")}
-                        {/* Dynamic arrow direction */}
-                        <div
-                            className={`absolute left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-transparent ${tooltipPosition.arrowUp
-                                ? 'bottom-full border-b-4 border-b-black'
-                                : 'top-full border-t-4 border-t-black'
-                                }`}
-                        ></div>
+                        {/* Arrow pointing up (since tooltip is below) */}
+                        <div className="absolute left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-transparent bottom-full border-b-4 border-b-black"></div>
                     </div>
                 </div>
             )}
