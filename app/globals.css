@@ -2166,7 +2166,7 @@ select:focus-visible,
     padding: 8px 12px;
     border-radius: 6px;
     font-size: 12px;
-    z-index: 999999;
+    z-index: 9999999 !important;
     pointer-events: none;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -2189,7 +2189,7 @@ select:focus-visible,
     position: absolute;
     border: 6px solid transparent;
     border-top-color: rgba(0, 0, 0, 0.95);
-    z-index: 999999;
+    z-index: 9999999 !important;
     pointer-events: none;
     bottom: 100%;
     left: 50%;
@@ -2210,6 +2210,8 @@ select:focus-visible,
     top: 100%;
     margin-bottom: auto;
     margin-top: 8px;
+    z-index: 9999999 !important;
+    position: fixed !important;
 }
 
 .reveal-votes-btn[title]:hover::before {
@@ -2219,6 +2221,8 @@ select:focus-visible,
     margin-top: 2px;
     border-top-color: transparent;
     border-bottom-color: rgba(0, 0, 0, 0.95);
+    z-index: 9999999 !important;
+    position: fixed !important;
 }
 
 /* Header buttons tooltip - show below */
@@ -2227,6 +2231,8 @@ select:focus-visible,
     top: 100%;
     margin-bottom: auto;
     margin-top: 8px;
+    z-index: 9999999 !important;
+    position: fixed !important;
 }
 
 .header-btn[title]:hover::before {
@@ -2236,4 +2242,6 @@ select:focus-visible,
     margin-top: 2px;
     border-top-color: transparent;
     border-bottom-color: rgba(0, 0, 0, 0.95);
+    z-index: 9999999 !important;
+    position: fixed !important;
 }
