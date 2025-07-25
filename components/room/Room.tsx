@@ -93,14 +93,12 @@ export function Room({ room, currentUser, onLeaveRoom, onEndSession, onUpdateSto
 
             {/* Header */}
             <RoomHeader
-                room={room}
-                currentUser={currentUser}
-                onLeaveRoom={onLeaveRoom}
-                onRevealVotes={handleRevealVotes}
-                onResetVotes={handleResetVotes}
-                onEndSession={onEndSession}
-                isVoting={isVoting}
+                roomCode={room.code}
+                participants={room.participants}
                 isRevealed={isRevealed}
+                onRevealVotes={handleRevealVotes}
+                onNewVote={handleResetVotes}
+                onEndSession={onEndSession || (() => { })}
                 isEditingStory={isEditingStory}
             />
 
