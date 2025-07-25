@@ -109,11 +109,18 @@ export function RoomHeader({
                         </div>
 
                         {/* Participants - Secondary Info */}
-                        <div className="hidden md:block" title={`${room.participants.length} participants in this planning session`}>
-                            <span className="text-sm text-gray-500 font-medium font-distressed">Team:</span>
-                            <span className="ml-2 text-sm font-medium text-black font-brand">
-                                {room.participants.length} people
-                            </span>
+                        <div className="hidden md:block relative">
+                            <button
+                                onClick={() => setShowParticipants(!showParticipants)}
+                                className="flex items-center gap-2 text-gray-600 hover:text-black transition-colors p-2 rounded-lg hover:bg-gray-50 hover:shadow-sm cursor-pointer"
+                                title={showParticipants ? "Hide participants list" : "View participants and their votes"}
+                            >
+                                <span className="text-sm text-gray-500 font-medium font-distressed">Team:</span>
+                                <span className="text-sm font-medium text-black font-brand">
+                                    {room.participants.length} people
+                                </span>
+                                <Users className="w-4 h-4" />
+                            </button>
                         </div>
                     </div>
 
