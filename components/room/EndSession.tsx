@@ -85,6 +85,7 @@ export function EndSession({
                         <button
                             onClick={onStartNewSession}
                             className="btn-primary flex items-center justify-center gap-2"
+                            title="Start a new planning session with the same team"
                         >
                             <RefreshCw className="w-4 h-4" />
                             Start New Session
@@ -92,6 +93,7 @@ export function EndSession({
                         <button
                             onClick={onReturnToRoom}
                             className="btn-secondary flex items-center justify-center gap-2"
+                            title="Go back to the current room"
                         >
                             <Home className="w-4 h-4" />
                             Return to Room
@@ -102,6 +104,7 @@ export function EndSession({
                         <button
                             onClick={onExitToHome}
                             className="btn-secondary flex items-center justify-center gap-2"
+                            title="Return to the homepage"
                         >
                             <Home className="w-4 h-4" />
                             Exit to Homepage
@@ -109,6 +112,7 @@ export function EndSession({
                         <button
                             onClick={onDisconnectWallet}
                             className="btn-secondary flex items-center justify-center gap-2"
+                            title="Disconnect your Web3 wallet"
                         >
                             <LogOut className="w-4 h-4" />
                             Disconnect Wallet

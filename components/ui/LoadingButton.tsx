@@ -12,6 +12,7 @@ interface LoadingButtonProps {
     disabled?: boolean
     className?: string
     loadingText?: string
+    title?: string
 }
 
 export function LoadingButton({
@@ -22,7 +23,8 @@ export function LoadingButton({
     variant = 'primary',
     disabled,
     className = '',
-    loadingText
+    loadingText,
+    title
 }: LoadingButtonProps) {
     const baseClasses = "relative inline-flex items-center justify-center px-6 py-3 font-bold rounded-lg transition-all duration-200 overflow-hidden vintage-btn enhanced-button"
 
@@ -38,6 +40,7 @@ export function LoadingButton({
             type={type}
             onClick={onClick}
             disabled={isDisabled}
+            title={title}
             className={`${baseClasses} ${variantClasses[variant]} ${className} ${isDisabled ? 'opacity-70 cursor-not-allowed' : ''
                 } focus-ring`}
             whileHover={!isDisabled ? { scale: 1.02 } : {}}

@@ -123,6 +123,7 @@ export function DisplayNameModal({ isOpen, onClose, onSubmit, user, isGuest, ens
                                 <button
                                     onClick={onClose}
                                     className="text-gray-600 hover:text-black transition-colors transform hover:scale-110"
+                                    title="Close this dialog"
                                 >
                                     <X className="w-6 h-6" />
                                 </button>
@@ -190,6 +191,7 @@ export function DisplayNameModal({ isOpen, onClose, onSubmit, user, isGuest, ens
                                         type="submit"
                                         disabled={isSubmitting || (!displayName.trim() && !useAnonymous)}
                                         className="w-full bg-black text-white font-semibold py-3 px-6 rounded-lg hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105 vintage-btn"
+                                        title="Continue with your display name"
                                     >
                                         {isSubmitting ? 'Setting up...' : 'Continue'}
                                     </button>
@@ -198,6 +200,7 @@ export function DisplayNameModal({ isOpen, onClose, onSubmit, user, isGuest, ens
                                         type="button"
                                         onClick={handleAnonymous}
                                         className="w-full bg-white text-black font-semibold py-3 px-6 border border-black rounded-lg hover:bg-gray-50 transition-colors transform hover:scale-105"
+                                        title="Continue without revealing your identity"
                                     >
                                         Continue Anonymously
                                     </button>

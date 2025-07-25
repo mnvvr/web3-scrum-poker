@@ -301,6 +301,7 @@ export function RoomCreation({ onCreateRoom, onJoinRoom, isCreating, userMode, d
                                                         ? 'bg-gray-100 border-black shadow-sm'
                                                         : 'bg-white hover:border-black'
                                                         }`}
+                                                    title={`Select ${config.name} - ${config.description}`}
                                                     style={{
                                                         boxShadow: cardType === type
                                                             ? '2px 2px 0 rgba(0, 0, 0, 0.1)'
@@ -375,6 +376,7 @@ export function RoomCreation({ onCreateRoom, onJoinRoom, isCreating, userMode, d
                                 type="button"
                                 onClick={() => setShowAdvancedSettings(!showAdvancedSettings)}
                                 className="inline-flex items-center gap-2 text-gray-600 hover:text-black transition-colors font-distressed"
+                                title={showAdvancedSettings ? "Hide advanced room settings" : "Show advanced room settings like reveal mode and sharing options"}
                             >
                                 <Settings className="w-4 h-4" />
                                 {showAdvancedSettings ? 'Hide' : 'Show'} Advanced Settings
@@ -409,6 +411,7 @@ export function RoomCreation({ onCreateRoom, onJoinRoom, isCreating, userMode, d
                                                     ? 'bg-gray-100 border-black shadow-md'
                                                     : 'bg-white hover:border-black'
                                                     }`}
+                                                title="Automatically reveal votes when all participants have voted"
                                             >
                                                 <div className="flex items-center gap-3 mb-2">
                                                     <div className="w-10 h-10 bg-black rounded-lg flex items-center justify-center icon-treatment">
@@ -431,6 +434,7 @@ export function RoomCreation({ onCreateRoom, onJoinRoom, isCreating, userMode, d
                                                     ? 'bg-gray-100 border-black shadow-md'
                                                     : 'bg-white hover:border-black'
                                                     }`}
+                                                title="Manually control when to reveal the voting results"
                                             >
                                                 <div className="flex items-center gap-3 mb-2">
                                                     <div className="w-10 h-10 bg-black rounded-lg flex items-center justify-center icon-treatment">

@@ -47,6 +47,7 @@ export default function HomePage() {
                                 isLoading={false}
                                 className="py-4 px-8 text-lg"
                                 onClick={() => window.location.href = '/room/create'}
+                                title="Start a free planning session without registration"
                             >
                                 <span className="flex items-center gap-2">
                                     Try It Free
@@ -58,6 +59,7 @@ export default function HomePage() {
                                 variant="secondary"
                                 className="py-4 px-8 text-lg"
                                 onClick={() => window.location.href = '/room/create?mode=wallet'}
+                                title="Connect your Web3 wallet for enhanced features"
                             >
                                 <span className="flex items-center gap-2">
                                     Connect Wallet
