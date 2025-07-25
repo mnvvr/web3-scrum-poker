@@ -278,7 +278,7 @@ export function RoomHeader({
                         {showTooltip === 'reveal' && (isEditingStory ? "Please finish editing the task first" : "Show all team votes and calculate the final estimate")}
                         {showTooltip === 'new' && (isEditingStory ? "Please finish editing the task first" : "Start a new voting round")}
                         {showTooltip === 'end' && (isEditingStory ? "Please finish editing the task first" : "End the current session")}
-                        <div className="absolute left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 top-full border-t-4 border-transparent border-t-black"></div>
+                        <div className="absolute left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 bottom-full border-b-4 border-transparent border-b-black"></div>
                     </div>
                 </div>
             )}

@@ -238,7 +238,7 @@ export function CurrentStory({ story, onUpdateStory, onEditStateChange }: Curren
                         {showTooltip === 'save' && (!!editReference && !isValidUrl(editReference) ? "Please enter a valid URL first" : "Save your changes to the task")}
                         {showTooltip === 'cancel' && "Discard changes and return to view mode"}
                         {showTooltip === 'expand' && (isExpanded ? "Show less of the description" : "Show full description")}
-                        <div className="absolute left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 top-full border-t-4 border-transparent border-t-black"></div>
+                        <div className="absolute left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 bottom-full border-b-4 border-transparent border-b-black"></div>
                     </div>
                 </div>
             )}
