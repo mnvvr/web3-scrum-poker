@@ -2160,13 +2160,13 @@ select:focus-visible,
 /* Enhanced Tooltip Styles */
 [title]:hover::after {
     content: attr(title);
-    position: absolute;
+    position: fixed !important;
     background: rgba(0, 0, 0, 0.95);
     color: white;
     padding: 8px 12px;
     border-radius: 6px;
     font-size: 12px;
-    z-index: 9999999 !important;
+    z-index: 2147483647 !important;
     pointer-events: none;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -2186,10 +2186,10 @@ select:focus-visible,
 
 [title]:hover::before {
     content: '';
-    position: absolute;
+    position: fixed !important;
     border: 6px solid transparent;
     border-top-color: rgba(0, 0, 0, 0.95);
-    z-index: 9999999 !important;
+    z-index: 2147483647 !important;
     pointer-events: none;
     bottom: 100%;
     left: 50%;
@@ -2210,7 +2210,7 @@ select:focus-visible,
     top: 100%;
     margin-bottom: auto;
     margin-top: 8px;
-    z-index: 9999999 !important;
+    z-index: 2147483647 !important;
     position: fixed !important;
 }
 
@@ -2221,7 +2221,7 @@ select:focus-visible,
     margin-top: 2px;
     border-top-color: transparent;
     border-bottom-color: rgba(0, 0, 0, 0.95);
-    z-index: 9999999 !important;
+    z-index: 2147483647 !important;
     position: fixed !important;
 }
 
@@ -2231,7 +2231,7 @@ select:focus-visible,
     top: 100%;
     margin-bottom: auto;
     margin-top: 8px;
-    z-index: 9999999 !important;
+    z-index: 2147483647 !important;
     position: fixed !important;
 }
 
@@ -2242,6 +2242,6 @@ select:focus-visible,
     margin-top: 2px;
     border-top-color: transparent;
     border-bottom-color: rgba(0, 0, 0, 0.95);
-    z-index: 9999999 !important;
+    z-index: 2147483647 !important;
     position: fixed !important;
 }
